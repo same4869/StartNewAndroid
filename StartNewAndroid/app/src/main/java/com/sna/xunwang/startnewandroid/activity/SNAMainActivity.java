@@ -2,17 +2,14 @@ package com.sna.xunwang.startnewandroid.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.sna.xunwang.startnewandroid.R;
-import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.fragment.DoubanFragment;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
-import com.sna.xunwang.startnewandroid.utils.XLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +25,6 @@ public class SNAMainActivity extends BaseActivity {
     Toolbar toolbar;
 
     private List<Fragment> fragments = new ArrayList<>();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        XLog.d(Constants.TAG, "onCreate");
-    }
 
     @Override
     public int getLayoutId() {
@@ -94,8 +85,7 @@ public class SNAMainActivity extends BaseActivity {
 
     }
 
-    private void showFragment(Fragment fragment)
-    {
+    private void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, fragment).commitAllowingStateLoss();
     }
 }

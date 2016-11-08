@@ -1,9 +1,11 @@
 package com.sna.xunwang.startnewandroid.activity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.utils.XLog;
 
 import butterknife.ButterKnife;
 
@@ -12,10 +14,11 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+
     @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        Log.d("kkkkkkkk", "BaseActivity");
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        XLog.d(Constants.TAG, "BaseActivity onCreate");
         setContentView(getLayoutId());
         ButterKnife.bind(this);
         initViews(savedInstanceState);
