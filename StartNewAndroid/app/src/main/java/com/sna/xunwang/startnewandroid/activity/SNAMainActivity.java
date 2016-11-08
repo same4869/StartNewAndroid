@@ -78,6 +78,7 @@ public class SNAMainActivity extends BaseActivity {
     @Override
     public void initToolBar() {
         toolbar.setTitle("呵呵呵呵");
+        toolbar.setSubtitle("哈哈哈哈");
     }
 
     @Override

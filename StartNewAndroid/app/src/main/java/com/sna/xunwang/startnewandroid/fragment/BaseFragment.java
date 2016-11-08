@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 
 import com.sna.xunwang.startnewandroid.utils.XLog;
 
+import butterknife.ButterKnife;
+
 import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 /**
@@ -31,6 +33,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ButterKnife.bind(this, view);
+        initViews();
         lazyFetchDataIfPrepared();
     }
 
@@ -62,4 +66,7 @@ public abstract class BaseFragment extends Fragment {
     public abstract int getLayoutId();
 
     public abstract void lazyFetchData();
+
+    public abstract void initViews();
+
 }
