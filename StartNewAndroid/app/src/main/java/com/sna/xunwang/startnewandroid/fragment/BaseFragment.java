@@ -7,11 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 
 import butterknife.ButterKnife;
-
-import static android.support.v7.widget.StaggeredGridLayoutManager.TAG;
 
 /**
  * Created by xunwang on 16/11/7.
@@ -56,7 +55,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        XLog.d(TAG, "isVisibleToUser = " + isVisibleToUser);
+        XLog.d(Constants.TAG, "isVisibleToUser = " + isVisibleToUser);
         if (isVisibleToUser) {//当当前为显示页面时
             lazyFetchDataIfPrepared();
         }

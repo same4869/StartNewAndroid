@@ -8,8 +8,8 @@ import android.support.v7.widget.Toolbar;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.sna.xunwang.startnewandroid.R;
-import com.sna.xunwang.startnewandroid.fragment.DoubanFragment;
-import com.sna.xunwang.startnewandroid.utils.ToastUtil;
+import com.sna.xunwang.startnewandroid.fragment.BiezhiFragment;
+import com.sna.xunwang.startnewandroid.fragment.OtherFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,14 +62,16 @@ public class SNAMainActivity extends BaseActivity {
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position, boolean wasSelected) {
-                ToastUtil.showToast(getApplicationContext(), "position --> " + position);
+                showFragment(fragments.get(position % 2));
+//                ToastUtil.showToast(getApplicationContext(), "position --> " + position);
             }
         });
     }
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        fragments.add(new DoubanFragment());
+        fragments.add(new BiezhiFragment());
+        fragments.add(new OtherFragment());
 
         showFragment(fragments.get(0));
         initAHBottomNavigation();
