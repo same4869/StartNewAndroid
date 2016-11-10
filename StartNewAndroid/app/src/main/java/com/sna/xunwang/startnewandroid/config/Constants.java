@@ -11,4 +11,6 @@ public class Constants {
 
     public static final String BOMB_APP_ID = "07fb87e5631556082cfcf91c851ac277";
 
+    public static final int EVER_TIME_SHOW = 7;
+
 }

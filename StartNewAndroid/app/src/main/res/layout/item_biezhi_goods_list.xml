@@ -1,56 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-    android:id="@+id/card_view"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:layout_margin="10dp"
-    android:clickable="true"
-    app:cardBackgroundColor="#ffff00"
-    app:cardCornerRadius="2dp"
-    app:cardElevation="4dp">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:layout_marginLeft="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginTop="12dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="10dp"
+    app:contentPadding="8dp">
 
 
-    <RelativeLayout
-        android:id="@+id/item_layout"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
 
-
-        <TextView
-            android:id="@+id/item_title"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="10dp"
-            android:lineSpacingExtra="2dp"
-            android:maxLines="3"
-            android:maxWidth="230dp"
-            android:padding="2dp"
-            android:textSize="18sp"/>
+            android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/item_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/ic_launcher"/>
+            <ImageView
+                android:id="@+id/bz_item_iv"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:layout_margin="6dp"
+                android:background="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"/>
 
-        <ImageView
-            android:id="@+id/item_more_pic"
-            android:layout_width="wrap_content"
+            <com.sna.xunwang.startnewandroid.view.LoadingView
+                android:id="@+id/bz_cool_wait_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignBottom="@+id/bz_item_iv"
+                android:layout_alignTop="@+id/bz_item_iv"
+                android:background="@color/theme"
+                app:loading_renderer="CoolWaitLoadingRenderer"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_launcher"
-            android:visibility="gone"/>
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/bz_item_title_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="非著名程序员"
+                android:textColor="#383838"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
+            <TextView
+                android:id="@+id/bz_item_content_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="美女说：非著名程序员公众号是东半球最好的技术分享公众号"
+                android:textColor="#545454"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </android.support.v7.widget.CardView>

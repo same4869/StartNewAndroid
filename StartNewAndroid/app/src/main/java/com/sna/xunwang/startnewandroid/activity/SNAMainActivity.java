@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.jaeger.library.StatusBarUtil;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.fragment.BiezhiFragment;
 import com.sna.xunwang.startnewandroid.fragment.OtherFragment;
@@ -79,6 +80,7 @@ public class SNAMainActivity extends BaseActivity {
 
     @Override
     public void initToolBar() {
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.bar_theme));
         toolbar.setTitle("呵呵呵呵");
         toolbar.setSubtitle("哈哈哈哈");
     }

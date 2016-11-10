@@ -57,7 +57,7 @@ public class OtherFragment extends BaseFragment {
     @OnClick(R.id.test_btn4)
     void test4() {
         List<String> lists = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 7; i++) {
             lists.add((int) (Math.random() * 5000) + "");
         }
         requesetBiezhiGoodsInfo(lists);

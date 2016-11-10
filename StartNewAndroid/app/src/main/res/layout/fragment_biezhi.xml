@@ -3,19 +3,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#00ff00"
               android:orientation="vertical">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="sadfasdfasdf"/>
+        android:text="每天三次,每次七个"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/biezhi_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#ffff0000"
         android:dividerHeight="10dp"/>
+
+    <com.sna.xunwang.startnewandroid.view.NextRefreshCountDownTimerView
+        android:id="@+id/biezhi_countdown_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        ></com.sna.xunwang.startnewandroid.view.NextRefreshCountDownTimerView>
 
 </LinearLayout>
