@@ -46,7 +46,13 @@
             android:process=":remote">
         </service>
 
-        <activity android:name=".activity.OtherActivity">
+        <activity
+            android:name=".activity.OtherActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".activity.BiezhiDetailActivity"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

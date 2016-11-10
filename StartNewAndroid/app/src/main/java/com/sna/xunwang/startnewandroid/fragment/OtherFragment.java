@@ -4,7 +4,7 @@ import android.content.Intent;
 
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.activity.OtherActivity;
-import com.sna.xunwang.startnewandroid.bean.BiezhiGoodBean;
+import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.manager.BaiduLocationManager;
 import com.sna.xunwang.startnewandroid.utils.XLog;
@@ -64,13 +64,13 @@ public class OtherFragment extends BaseFragment {
     }
 
     private void requesetBiezhiGoodsInfo(List<String> randoms) {
-        BmobQuery<BiezhiGoodBean> query = new BmobQuery<>();
+        BmobQuery<BiezhiGoodsBean> query = new BmobQuery<>();
         query.setLimit(10).addWhereContainedIn("id", randoms)
-                .findObjects(new FindListener<BiezhiGoodBean>() {
+                .findObjects(new FindListener<BiezhiGoodsBean>() {
                     @Override
-                    public void done(List<BiezhiGoodBean> object, BmobException e) {
+                    public void done(List<BiezhiGoodsBean> object, BmobException e) {
                         if (e == null) {
-                            for (BiezhiGoodBean biezhiGoodBean : object) {
+                            for (BiezhiGoodsBean biezhiGoodBean : object) {
                                 XLog.d(Constants.TAG, "biezhiGoodBean.getTitle() --> " + biezhiGoodBean.getTitle());
                             }
                         } else {

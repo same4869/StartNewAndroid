@@ -13,7 +13,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.sna.xunwang.startnewandroid.R;
-import com.sna.xunwang.startnewandroid.bean.BiezhiGoodBean;
+import com.sna.xunwang.startnewandroid.activity.BiezhiDetailActivity;
+import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.view.LoadingView;
 
@@ -28,14 +29,14 @@ import butterknife.ButterKnife;
 
 public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.BiezhiViewHolder> {
     private Context mContext;
-    private List<BiezhiGoodBean> biezhiGoodBeanlist;
+    private List<BiezhiGoodsBean> biezhiGoodBeanlist;
 
-    public BiezhiGoodsAdapter(Context mContext, List<BiezhiGoodBean> biezhiGoodBeanlist) {
+    public BiezhiGoodsAdapter(Context mContext, List<BiezhiGoodsBean> biezhiGoodBeanlist) {
         this.mContext = mContext;
         this.biezhiGoodBeanlist = biezhiGoodBeanlist;
     }
 
-    public void setData(List<BiezhiGoodBean> biezhiGoodBeanlist) {
+    public void setData(List<BiezhiGoodsBean> biezhiGoodBeanlist) {
         this.biezhiGoodBeanlist = biezhiGoodBeanlist;
         notifyDataSetChanged();
     }
@@ -49,7 +50,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final BiezhiViewHolder holder, int position) {
+    public void onBindViewHolder(final BiezhiViewHolder holder, final int position) {
         if (biezhiGoodBeanlist != null) {
             holder.biezhiTitie.setText(biezhiGoodBeanlist.get(position).getTitle());
             Glide.with(mContext).load(biezhiGoodBeanlist.get(position).getPicUrl()).animate(R.anim.item_alpha_in).into
@@ -61,6 +62,12 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                     loadingViewOutAnim(holder.biezhiLoadingView);
                 }
             }, 1500);
+            holder.biezhiPic.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    BiezhiDetailActivity.lanuch(mContext, biezhiGoodBeanlist.get(position));
+                }
+            });
         } else {
             holder.biezhiTitie.setText("");
             holder.biezhiPrice.setText("");

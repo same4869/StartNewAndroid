@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.adapter.BiezhiGoodsAdapter;
-import com.sna.xunwang.startnewandroid.bean.BiezhiGoodBean;
+import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.TimeUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
@@ -53,19 +53,23 @@ public class BiezhiFragment extends BaseFragment {
     private void prepareRequeset() {
         List<String> lists = new ArrayList<>();
         for (int i = 0; i < Constants.EVER_TIME_SHOW; i++) {
-            lists.add(String.valueOf((int) (Math.random() * 2000)));
+            //暂时展示13000-14000的数据,后续再定逻辑
+            String num = String.valueOf((int) (Math.random() * 1000) + 13000);
+            lists.add(num);
+            XLog.d(Constants.TAG, "num --> " + num);
         }
         requesetBiezhiGoodsInfo(lists);
     }
 
     private void requesetBiezhiGoodsInfo(List<String> randoms) {
-        BmobQuery<BiezhiGoodBean> query = new BmobQuery<>();
+        BmobQuery<BiezhiGoodsBean> query = new BmobQuery<>();
         query.setLimit(Constants.EVER_TIME_SHOW).addWhereContainedIn("id", randoms)
-                .findObjects(new FindListener<BiezhiGoodBean>() {
+                .findObjects(new FindListener<BiezhiGoodsBean>() {
                     @Override
-                    public void done(List<BiezhiGoodBean> object, BmobException e) {
+                    public void done(List<BiezhiGoodsBean> object, BmobException e) {
                         if (e == null) {
-                            for (BiezhiGoodBean biezhiGoodBean : object) {
+                            XLog.d(Constants.TAG, "object.size() --> " + object.size());
+                            for (BiezhiGoodsBean biezhiGoodBean : object) {
                                 XLog.d(Constants.TAG, "biezhiGoodBean.getTitle() --> " + biezhiGoodBean.getTitle());
                             }
                             biezhiGoodsAdapter.setData(object);

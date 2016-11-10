@@ -6,7 +6,7 @@ import cn.bmob.v3.BmobObject;
  * Created by xunwang on 16/11/9.
  */
 
-public class BiezhiGoodBean extends BmobObject {
+public class BiezhiGoodsBean extends BmobObject {
     private String id;
     private String title;
     private String url;
