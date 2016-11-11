@@ -3,6 +3,7 @@ package com.sna.xunwang.startnewandroid.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +20,15 @@ import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by xunwang on 16/11/10.
  */
 
 public class CommWebView extends FrameLayout {
-//    @BindView(R.id.comm_webview)
+    @BindView(R.id.comm_webview)
     WebView webView;
 
     public CommWebView(Context context) {
@@ -41,38 +45,30 @@ public class CommWebView extends FrameLayout {
     }
 
     private void init(Context context) {
-        View v = LayoutInflater.from(context).inflate(R.layout.view_comm_webview, null);
-//        ButterKnife.bind(this, v);
-        webView = (WebView) v.findViewById(R.id.comm_webview);
-//        setWebSetting(webView.getSettings());
+        View v = LayoutInflater.from(context).inflate(R.layout.view_comm_webview, this);
+        ButterKnife.bind(this, v);
+        setWebSetting(webView.getSettings());
         webView.setWebChromeClient(new BaseWebChromeClient());
         webView.setWebViewClient(new BaseWebViewClient());
-    }
-
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-                MeasureSpec.AT_MOST);
-        super.onMeasure(widthMeasureSpec, expandSpec);
     }
 
     protected void setWebSetting(WebSettings setting) {
         setting.setJavaScriptEnabled(true);
         setting.setAppCacheEnabled(true);
-//        setting.setJavaScriptCanOpenWindowsAutomatically(true);
+        setting.setJavaScriptCanOpenWindowsAutomatically(true);
+        setting.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         setting.setCacheMode(WebSettings.LOAD_NO_CACHE);
-//        setting.setAppCacheEnabled(false);
-//        setting.setBuiltInZoomControls(false);
+        setting.setBuiltInZoomControls(false);
         setting.setSupportZoom(false);
-//        setting.setDomStorageEnabled(true);
-//        setting.setUseWideViewPort(true);
-//        setting.setGeolocationEnabled(true);
-//        setting.setAllowFileAccess(false);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//            setting.setAllowFileAccessFromFileURLs(false);
-//            setting.setAllowUniversalAccessFromFileURLs(false);
-//        }
+        setting.setDomStorageEnabled(true);
+        setting.setUseWideViewPort(true);
+        setting.setGeolocationEnabled(true);
+        setting.setAllowFileAccess(false);
+        setting.setLoadWithOverviewMode(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            setting.setAllowFileAccessFromFileURLs(false);
+            setting.setAllowUniversalAccessFromFileURLs(false);
+        }
     }
 
     public void loadUrl(String url) {

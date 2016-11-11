@@ -19,14 +19,14 @@ public class TimeUtil {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         if (hour <= 8 || hour > 20) {
             if (hour > 20) {
-                nextRefreshCountDownTimerView.setTime(32 - hour, 60 - min, 60 - sec);
+                nextRefreshCountDownTimerView.setTime(32 - hour, 59 - min, 59 - sec);
             } else {
-                nextRefreshCountDownTimerView.setTime(8 - hour, 60 - min, 60 - sec);
+                nextRefreshCountDownTimerView.setTime(8 - hour, 59 - min, 59 - sec);
             }
         } else if (hour <= 12 && hour > 8) {
-            nextRefreshCountDownTimerView.setTime(12 - hour, 60 - min, 60 - sec);
+            nextRefreshCountDownTimerView.setTime(12 - hour, 59 - min, 59 - sec);
         } else if (hour <= 20 && hour > 12) {
-            nextRefreshCountDownTimerView.setTime(20 - hour, 60 - min, 60 - sec);
+            nextRefreshCountDownTimerView.setTime(20 - hour, 59 - min, 59 - sec);
         }
         nextRefreshCountDownTimerView.start();
     }

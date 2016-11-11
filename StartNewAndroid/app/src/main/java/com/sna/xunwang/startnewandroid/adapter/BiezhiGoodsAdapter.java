@@ -1,6 +1,7 @@
 package com.sna.xunwang.startnewandroid.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +17,22 @@ import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.activity.BiezhiDetailActivity;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.utils.XLog;
 import com.sna.xunwang.startnewandroid.view.LoadingView;
 
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import master.flame.danmaku.controller.DrawHandler;
+import master.flame.danmaku.danmaku.model.BaseDanmaku;
+import master.flame.danmaku.danmaku.model.DanmakuTimer;
+import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.model.android.Danmakus;
+import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**
  * Created by xunwang on 16/11/9.
@@ -30,6 +41,14 @@ import butterknife.ButterKnife;
 public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.BiezhiViewHolder> {
     private Context mContext;
     private List<BiezhiGoodsBean> biezhiGoodBeanlist;
+    private boolean showDanmaku;
+
+    private BaseDanmakuParser parser = new BaseDanmakuParser() {
+        @Override
+        protected IDanmakus parse() {
+            return new Danmakus();
+        }
+    };
 
     public BiezhiGoodsAdapter(Context mContext, List<BiezhiGoodsBean> biezhiGoodBeanlist) {
         this.mContext = mContext;
@@ -60,6 +79,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                 @Override
                 public void run() {
                     loadingViewOutAnim(holder.biezhiLoadingView);
+                    holder.danmakuContext = DanmakuContext.create();
                 }
             }, 1500);
             holder.biezhiPic.setOnClickListener(new View.OnClickListener() {
@@ -68,10 +88,124 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                     BiezhiDetailActivity.lanuch(mContext, biezhiGoodBeanlist.get(position));
                 }
             });
+            holder.biezhiDanmuIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (!holder.isDanmuOpen) {
+                        holder.danmakuView.stop();
+                        holder.biezhiDanmuIv.setImageResource(R.mipmap.bz_danmu_open);
+                        initDamuview(holder.danmakuContext, holder.danmakuView, holder.biezhiDanmuIv);
+                        holder.isDanmuOpen = true;
+                    } else {
+                        if (holder.danmakuView != null && showDanmaku) {
+                            holder.danmakuView.stop();
+                            holder.danmakuView.removeAllDanmakus(true);
+                            holder.biezhiDanmuIv.setImageResource(R.mipmap.bz_danmu_close);
+                            showDanmaku = false;
+                            holder.isDanmuOpen = false;
+                        }
+                    }
+                }
+            });
         } else {
             holder.biezhiTitie.setText("");
             holder.biezhiPrice.setText("");
         }
+    }
+
+    private void initDamuview(final DanmakuContext danmakuContext, final DanmakuView danmakuView, final ImageView
+            danmuIv) {
+        danmakuView.enableDanmakuDrawingCache(true);
+        danmakuView.setCallback(new DrawHandler.Callback() {
+            @Override
+            public void prepared() {
+                showDanmaku = true;
+                danmakuView.start();
+                generateSomeDanmaku(danmakuContext, danmakuView);
+            }
+
+            @Override
+            public void updateTimer(DanmakuTimer timer) {
+            }
+
+            @Override
+            public void danmakuShown(BaseDanmaku danmaku) {
+            }
+
+            @Override
+            public void drawingFinished() {
+                XLog.d(Constants.TAG, "drawingFinished");
+                if (danmakuView != null && showDanmaku) {
+                    danmakuView.stop();
+                    danmuIv.setImageResource(R.mipmap.bz_danmu_close);
+                    showDanmaku = false;
+                }
+            }
+        });
+        danmakuView.prepare(parser, danmakuContext);
+    }
+
+    /**
+     * 向弹幕View中添加一条弹幕
+     *
+     * @param content    弹幕的具体内容
+     * @param withBorder 弹幕是否有边框
+     */
+    private void addDanmaku(DanmakuContext danmakuContext, DanmakuView danmakuView, String content, boolean
+            withBorder) {
+        BaseDanmaku danmaku = danmakuContext.mDanmakuFactory.createDanmaku(BaseDanmaku.TYPE_SCROLL_RL);
+        danmaku.text = content;
+        danmaku.padding = 5;
+        danmaku.textSize = sp2px(20);
+        danmaku.textColor = Color.WHITE;
+        danmaku.setTime(danmakuView.getCurrentTime());
+        if (withBorder) {
+            danmaku.borderColor = Color.GREEN;
+        }
+        danmakuView.addDanmaku(danmaku);
+    }
+
+    /**
+     * 随机生成一些弹幕内容以供测试
+     */
+    private void generateSomeDanmaku(final DanmakuContext danmakuContext, final DanmakuView danmakuView) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 30; i++) {
+                    if (showDanmaku) {
+                        int time = new Random().nextInt(300);
+                        String content = "" + time + time;
+                        addDanmaku(danmakuContext, danmakuView, content, false);
+                        try {
+                            Thread.sleep(time);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+//                while (showDanmaku) {
+//                    int time = new Random().nextInt(300);
+//                    String content = "" + time + time;
+//                    addDanmaku(danmakuContext, danmakuView, content, false);
+//                    try {
+//                        Thread.sleep(time);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+            }
+        }).start();
+    }
+
+
+    /**
+     * sp转px的方法。
+     */
+    public int sp2px(float spValue) {
+        final float fontScale = mContext.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
     }
 
     private void loadingViewOutAnim(final LoadingView loadingView) {
@@ -103,6 +237,14 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         return Constants.EVER_TIME_SHOW;
     }
 
+//    public void releaseDanmu() {
+//        showDanmaku = false;
+//        if (danmakuView != null) {
+//            danmakuView.release();
+//            danmakuView = null;
+//        }
+//    }
+
     class BiezhiViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.bz_item_iv)
@@ -113,6 +255,12 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         TextView biezhiPrice;
         @BindView(R.id.bz_cool_wait_view)
         LoadingView biezhiLoadingView;
+        @BindView(R.id.bz_danmaku_view)
+        DanmakuView danmakuView;
+        @BindView(R.id.bz_danmu_iv)
+        ImageView biezhiDanmuIv;
+        private DanmakuContext danmakuContext;
+        private boolean isDanmuOpen;
 
         public BiezhiViewHolder(View view) {
             super(view);

@@ -52,4 +52,5 @@ public class BiezhiGoodsBean extends BmobObject {
     public void setPicUrl(String picUrl) {
         this.picUrl = picUrl;
     }
+
 }

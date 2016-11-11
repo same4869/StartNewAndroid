@@ -29,6 +29,7 @@ public class BiezhiFragment extends BaseFragment {
     @BindView(R.id.biezhi_countdown_view)
     NextRefreshCountDownTimerView nextRefreshCountDownTimerView;
     private BiezhiGoodsAdapter biezhiGoodsAdapter;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     public int getLayoutId() {
@@ -43,9 +44,14 @@ public class BiezhiFragment extends BaseFragment {
     @Override
     public void initViews() {
         biezhiGoodsAdapter = new BiezhiGoodsAdapter(getActivity(), null);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.setAdapter(biezhiGoodsAdapter);
+
+        linearLayoutManager.setSmoothScrollbarEnabled(true);
+        linearLayoutManager.setAutoMeasureEnabled(true);
+        recyclerView.setHasFixedSize(true);
         TimeUtil.calcNextTime(nextRefreshCountDownTimerView, System.currentTimeMillis());
 
     }
@@ -79,5 +85,6 @@ public class BiezhiFragment extends BaseFragment {
                     }
                 });
     }
+
 
 }

@@ -7,7 +7,7 @@
     <WebView
         android:id="@+id/comm_webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="2000dp"
         android:background="#00f000"
         android:isScrollContainer="false"
         android:overScrollMode="never"
