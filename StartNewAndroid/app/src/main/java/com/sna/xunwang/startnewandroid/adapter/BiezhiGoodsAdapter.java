@@ -91,15 +91,20 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             holder.biezhiDanmuIv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    XLog.d(Constants.TAG, "holder.isDanmuOpen --> " + holder.isDanmuOpen + " showDanmaku --> " +
+                            showDanmaku);
+                    holder.danmakuView.toggle();
                     if (!holder.isDanmuOpen) {
                         holder.danmakuView.stop();
                         holder.biezhiDanmuIv.setImageResource(R.mipmap.bz_danmu_open);
-                        initDamuview(holder.danmakuContext, holder.danmakuView, holder.biezhiDanmuIv);
+                        initDamuview(holder);
                         holder.isDanmuOpen = true;
                     } else {
                         if (holder.danmakuView != null && showDanmaku) {
-                            holder.danmakuView.stop();
+                            XLog.d(Constants.TAG, "removeAllDanmakus");
+                            holder.danmakuView.clear();
                             holder.danmakuView.removeAllDanmakus(true);
+                            holder.danmakuView.stop();
                             holder.biezhiDanmuIv.setImageResource(R.mipmap.bz_danmu_close);
                             showDanmaku = false;
                             holder.isDanmuOpen = false;
@@ -113,15 +118,14 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         }
     }
 
-    private void initDamuview(final DanmakuContext danmakuContext, final DanmakuView danmakuView, final ImageView
-            danmuIv) {
-        danmakuView.enableDanmakuDrawingCache(true);
-        danmakuView.setCallback(new DrawHandler.Callback() {
+    private void initDamuview(final BiezhiViewHolder holder) {
+        holder.danmakuView.enableDanmakuDrawingCache(true);
+        holder.danmakuView.setCallback(new DrawHandler.Callback() {
             @Override
             public void prepared() {
                 showDanmaku = true;
-                danmakuView.start();
-                generateSomeDanmaku(danmakuContext, danmakuView);
+                holder.danmakuView.start();
+                generateSomeDanmaku(holder.danmakuContext, holder.danmakuView);
             }
 
             @Override
@@ -134,15 +138,16 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
 
             @Override
             public void drawingFinished() {
-                XLog.d(Constants.TAG, "drawingFinished");
-                if (danmakuView != null && showDanmaku) {
-                    danmakuView.stop();
-                    danmuIv.setImageResource(R.mipmap.bz_danmu_close);
+                XLog.d(Constants.TAG, "drawingFinished showDanmaku --> " + showDanmaku);
+                if (holder.danmakuView != null && showDanmaku) {
+                    holder.danmakuView.stop();
+                    holder.biezhiDanmuIv.setImageResource(R.mipmap.bz_danmu_close);
                     showDanmaku = false;
+                    holder.isDanmuOpen = false;
                 }
             }
         });
-        danmakuView.prepare(parser, danmakuContext);
+        holder.danmakuView.prepare(parser, holder.danmakuContext);
     }
 
     /**
@@ -245,7 +250,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
 //        }
 //    }
 
-    class BiezhiViewHolder extends RecyclerView.ViewHolder {
+    public static class BiezhiViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.bz_item_iv)
         ImageView biezhiPic;
