@@ -77,7 +77,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <com.sna.xunwang.startnewandroid.view.BiezhiScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/bzd_detail_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -97,6 +97,6 @@
                 />
         </FrameLayout>
 
-    </com.sna.xunwang.startnewandroid.view.BiezhiScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

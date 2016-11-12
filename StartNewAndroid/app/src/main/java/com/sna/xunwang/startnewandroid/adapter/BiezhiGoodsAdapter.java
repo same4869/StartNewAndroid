@@ -20,6 +20,7 @@ import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 import com.sna.xunwang.startnewandroid.view.LoadingView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -29,6 +30,7 @@ import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
 import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
 import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
@@ -79,7 +81,14 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                 @Override
                 public void run() {
                     loadingViewOutAnim(holder.biezhiLoadingView);
+
+                    HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<Integer, Boolean>();
+                    overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_LR, true);
+                    overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_BOTTOM, true);
                     holder.danmakuContext = DanmakuContext.create();
+                    holder.danmakuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 2)
+                            .setScaleTextSize(1.0f).setDuplicateMergingEnabled(true).setScrollSpeedFactor(0.8f)
+                            .preventOverlapping(overlappingEnablePair);
                 }
             }, 1500);
             holder.biezhiPic.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +149,6 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             public void drawingFinished() {
                 XLog.d(Constants.TAG, "drawingFinished showDanmaku --> " + showDanmaku);
                 if (holder.danmakuView != null && showDanmaku) {
-                    holder.danmakuView.stop();
                     holder.biezhiDanmuIv.setImageResource(R.mipmap.bz_danmu_close);
                     showDanmaku = false;
                     holder.isDanmuOpen = false;
@@ -162,12 +170,16 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         danmaku.text = content;
         danmaku.padding = 5;
         danmaku.textSize = sp2px(20);
-        danmaku.textColor = Color.WHITE;
+        danmaku.textColor = createRandomColor();
         danmaku.setTime(danmakuView.getCurrentTime());
         if (withBorder) {
             danmaku.borderColor = Color.GREEN;
         }
         danmakuView.addDanmaku(danmaku);
+    }
+
+    private int createRandomColor() {
+        return Color.argb(255, (int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
     }
 
     /**
@@ -180,7 +192,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                 for (int i = 0; i < 30; i++) {
                     if (showDanmaku) {
                         int time = new Random().nextInt(300);
-                        String content = "" + time + time;
+                        String content = "" + time + time + "仿古教室多发几个司法机关";
                         addDanmaku(danmakuContext, danmakuView, content, false);
                         try {
                             Thread.sleep(time);
@@ -189,17 +201,6 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                         }
                     }
                 }
-
-//                while (showDanmaku) {
-//                    int time = new Random().nextInt(300);
-//                    String content = "" + time + time;
-//                    addDanmaku(danmakuContext, danmakuView, content, false);
-//                    try {
-//                        Thread.sleep(time);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
             }
         }).start();
     }
@@ -241,14 +242,6 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         }
         return Constants.EVER_TIME_SHOW;
     }
-
-//    public void releaseDanmu() {
-//        showDanmaku = false;
-//        if (danmakuView != null) {
-//            danmakuView.release();
-//            danmakuView = null;
-//        }
-//    }
 
     public static class BiezhiViewHolder extends RecyclerView.ViewHolder {
 
