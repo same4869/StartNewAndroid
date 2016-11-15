@@ -19,9 +19,9 @@ import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.XLog;
-import com.sna.xunwang.startnewandroid.view.CommWebView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class BiezhiDetailActivity extends BaseActivity {
     private static final String EXTRA_DETAIL = "extra_detail";
@@ -31,8 +31,10 @@ public class BiezhiDetailActivity extends BaseActivity {
     TextView detailTitle;
     @BindView(R.id.bzd_detail_source)
     TextView detailSource;
-    @BindView(R.id.bzd_detail_web_view)
-    CommWebView webView;
+//    @BindView(R.id.bzd_detail_web_view)
+//    CommWebView webView;
+
+    private String url;
 
     @Override
     public int getLayoutId() {
@@ -99,9 +101,17 @@ public class BiezhiDetailActivity extends BaseActivity {
                         (bzdDetailImage);
                 detailTitle.setText(dailyBean.getTitle());
                 detailSource.setText(dailyBean.getPrice());
-                webView.loadUrl(dailyBean.getUrl());
+//                webView.loadUrl(dailyBean.getUrl());
+                url = dailyBean.getUrl();
             }
         }
+    }
+
+    @OnClick(R.id.next_btn)
+    void next() {
+        Intent intent = new Intent(this, CommWebviewActivity.class);
+        intent.putExtra(CommWebviewActivity.COMMON_WEB_URL, url);
+        startActivity(intent);
     }
 
     public static void lanuch(Context context, BiezhiGoodsBean dailyBean) {

@@ -18,7 +18,7 @@ import com.sna.xunwang.startnewandroid.activity.BiezhiDetailActivity;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.XLog;
-import com.sna.xunwang.startnewandroid.view.LoadingView;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +73,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
     @Override
     public void onBindViewHolder(final BiezhiViewHolder holder, final int position) {
         if (biezhiGoodBeanlist != null) {
+            holder.biezhiLoadingView.smoothToShow();
             holder.biezhiTitie.setText(biezhiGoodBeanlist.get(position).getTitle());
             Glide.with(mContext).load(biezhiGoodBeanlist.get(position).getPicUrl()).animate(R.anim.item_alpha_in).into
                     (holder.biezhiPic);
@@ -87,7 +88,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                     overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_BOTTOM, true);
                     holder.danmakuContext = DanmakuContext.create();
                     holder.danmakuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 2)
-                            .setScaleTextSize(1.0f).setDuplicateMergingEnabled(true).setScrollSpeedFactor(0.8f)
+                            .setScaleTextSize(1.0f).setDuplicateMergingEnabled(true).setScrollSpeedFactor(0.6f)
                             .preventOverlapping(overlappingEnablePair);
                 }
             }, 1500);
@@ -214,7 +215,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         return (int) (spValue * fontScale + 0.5f);
     }
 
-    private void loadingViewOutAnim(final LoadingView loadingView) {
+    private void loadingViewOutAnim(final AVLoadingIndicatorView loadingView) {
         AnimationSet alphaAnimation = (AnimationSet) AnimationUtils.loadAnimation(mContext, R.anim.item_alpha_out);
         alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -224,6 +225,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                loadingView.hide();
                 loadingView.setVisibility(View.GONE);
             }
 
@@ -252,7 +254,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         @BindView(R.id.bz_item_content_tv)
         TextView biezhiPrice;
         @BindView(R.id.bz_cool_wait_view)
-        LoadingView biezhiLoadingView;
+        AVLoadingIndicatorView biezhiLoadingView;
         @BindView(R.id.bz_danmaku_view)
         DanmakuView danmakuView;
         @BindView(R.id.bz_danmu_iv)

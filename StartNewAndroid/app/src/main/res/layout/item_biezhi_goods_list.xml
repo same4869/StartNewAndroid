@@ -31,7 +31,6 @@
                 android:layout_height="300dp"
                 android:layout_gravity="center"
                 android:layout_margin="6dp"
-                android:background="@mipmap/ic_launcher"
                 android:scaleType="centerCrop"/>
 
             <master.flame.danmaku.ui.widget.DanmakuView
@@ -41,14 +40,13 @@
                 android:layout_alignBottom="@+id/bz_item_iv"
                 android:layout_alignTop="@+id/bz_item_iv"/>
 
-            <com.sna.xunwang.startnewandroid.view.LoadingView
+            <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/bz_cool_wait_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/bz_item_iv"
-                android:layout_alignTop="@+id/bz_item_iv"
-                android:background="@color/theme"
-                app:loading_renderer="CoolWaitLoadingRenderer"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:indicatorColor="@color/theme"
+                app:indicatorName="BallGridPulseIndicator"/>
         </RelativeLayout>
 
         <RelativeLayout

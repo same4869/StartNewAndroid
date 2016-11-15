@@ -54,6 +54,8 @@
             android:name=".activity.BiezhiDetailActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".activity.CommWebviewActivity">
+        </activity>
     </application>
 
 </manifest>
