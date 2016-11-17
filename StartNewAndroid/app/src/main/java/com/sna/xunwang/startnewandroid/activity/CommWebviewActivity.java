@@ -2,7 +2,9 @@ package com.sna.xunwang.startnewandroid.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -10,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.sna.xunwang.startnewandroid.R;
+import com.sna.xunwang.startnewandroid.config.Constants;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import butterknife.BindView;
@@ -72,7 +75,23 @@ public class CommWebviewActivity extends BaseActivity {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return super.shouldOverrideUrlLoading(view, url);
+            Log.d(Constants.TAG, "url --> " + url);
+            if (url.startsWith("taobao") || url.startsWith("tmall")) {
+                try {
+                    // 以下固定写法
+                    final Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(url));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                } catch (Exception e) {
+                    // 防止没有安装的情况
+                    e.printStackTrace();
+                }
+                return true;
+            }
+            view.loadUrl(url);
+            return true;
         }
 
         @Override

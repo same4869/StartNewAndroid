@@ -13,10 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.ldoublem.thumbUplib.ThumbUpView;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.activity.BiezhiDetailActivity;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 import com.wang.avi.AVLoadingIndicatorView;
 
@@ -119,6 +121,16 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                             showDanmaku = false;
                             holder.isDanmuOpen = false;
                         }
+                    }
+                }
+            });
+            holder.thumbUpView.setOnThumbUp(new ThumbUpView.OnThumbUp() {
+                @Override
+                public void like(boolean like) {
+                    if(like){
+                        ToastUtil.showToast(mContext, "收藏成功");
+                    }else{
+                        ToastUtil.showToast(mContext, "取消收藏成功");
                     }
                 }
             });
@@ -259,6 +271,8 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         DanmakuView danmakuView;
         @BindView(R.id.bz_danmu_iv)
         ImageView biezhiDanmuIv;
+        @BindView(R.id.bz_collect)
+        ThumbUpView thumbUpView;
         private DanmakuContext danmakuContext;
         private boolean isDanmuOpen;
 
