@@ -12,11 +12,17 @@ import cn.bmob.v3.BmobConfig;
  */
 
 public class SNAApplication extends Application {
+    protected static SNAApplication instance;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         initBomb();
+    }
+
+    public static SNAApplication getInstance() {
+        return instance;
     }
 
     private void initBomb() {

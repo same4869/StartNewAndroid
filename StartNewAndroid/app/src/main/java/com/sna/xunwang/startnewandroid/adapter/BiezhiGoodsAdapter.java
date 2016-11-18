@@ -14,9 +14,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ldoublem.thumbUplib.ThumbUpView;
+import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.activity.BiezhiDetailActivity;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
+import com.sna.xunwang.startnewandroid.comm.MultiThreadAsyncTask;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
@@ -127,10 +129,10 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             holder.thumbUpView.setOnThumbUp(new ThumbUpView.OnThumbUp() {
                 @Override
                 public void like(boolean like) {
-                    if(like){
-                        ToastUtil.showToast(mContext, "收藏成功");
-                    }else{
-                        ToastUtil.showToast(mContext, "取消收藏成功");
+                    if (like) {
+                        ToastUtil.showToast(mContext, "收藏成功", TastyToast.SUCCESS);
+                    } else {
+                        ToastUtil.showToast(mContext, "取消收藏成功", TastyToast.SUCCESS);
                     }
                 }
             });
@@ -199,13 +201,13 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
      * 随机生成一些弹幕内容以供测试
      */
     private void generateSomeDanmaku(final DanmakuContext danmakuContext, final DanmakuView danmakuView) {
-        new Thread(new Runnable() {
+        MultiThreadAsyncTask.poolExecute(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < 30; i++) {
                     if (showDanmaku) {
                         int time = new Random().nextInt(300);
-                        String content = "" + time + time + "仿古教室多发几个司法机关";
+                        String content = "" + time + time + "我是第" + i + "个弹幕";
                         addDanmaku(danmakuContext, danmakuView, content, false);
                         try {
                             Thread.sleep(time);
@@ -215,7 +217,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                     }
                 }
             }
-        }).start();
+        });
     }
 
 

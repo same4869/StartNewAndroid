@@ -11,8 +11,10 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import butterknife.BindView;
@@ -83,11 +85,17 @@ public class CommWebviewActivity extends BaseActivity {
                             Uri.parse(url));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                             | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    Uri uri = Uri.parse(url);
+                    intent.setData(uri);
                     startActivity(intent);
                 } catch (Exception e) {
-                    // 防止没有安装的情况
+                    ToastUtil.showToast(getApplicationContext(), "您没有安装淘宝客户端", TastyToast.WARNING);
                     e.printStackTrace();
                 }
+                return true;
+            }
+            if (url.endsWith("apk")) {
+                ToastUtil.showToast(getApplicationContext(), "暂不支持直接下载,请去市场下载哟", TastyToast.WARNING);
                 return true;
             }
             view.loadUrl(url);

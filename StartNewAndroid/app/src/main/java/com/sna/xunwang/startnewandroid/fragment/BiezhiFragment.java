@@ -7,6 +7,7 @@ import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.adapter.BiezhiGoodsAdapter;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.db.BiezhiGoodsDBHelper;
 import com.sna.xunwang.startnewandroid.utils.TimeUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 import com.sna.xunwang.startnewandroid.view.NextRefreshCountDownTimerView;
@@ -75,12 +76,15 @@ public class BiezhiFragment extends BaseFragment {
                     public void done(List<BiezhiGoodsBean> object, BmobException e) {
                         if (e == null) {
                             XLog.d(Constants.TAG, "object.size() --> " + object.size());
-                            for (BiezhiGoodsBean biezhiGoodBean : object) {
-                                XLog.d(Constants.TAG, "biezhiGoodBean.getTitle() --> " + biezhiGoodBean.getTitle());
+                            for (int i = 0; i < object.size(); i++) {
+                                XLog.d(Constants.TAG, "biezhiGoodBean.getTitle() --> " + object.get(i).getTitle());
+                                BiezhiGoodsDBHelper.getInstance().save(object.get(i));
                             }
                             biezhiGoodsAdapter.setData(object);
                         } else {
                             XLog.d(Constants.TAG, "error：" + e.getMessage() + "," + e.getErrorCode());
+                            List<BiezhiGoodsBean> datas = BiezhiGoodsDBHelper.getInstance().getAllData();
+                            biezhiGoodsAdapter.setData(datas);
                         }
                     }
                 });
