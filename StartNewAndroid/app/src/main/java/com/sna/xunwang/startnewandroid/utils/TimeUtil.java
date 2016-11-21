@@ -1,5 +1,6 @@
 package com.sna.xunwang.startnewandroid.utils;
 
+import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.view.NextRefreshCountDownTimerView;
 
 import java.util.Calendar;
@@ -17,16 +18,17 @@ public class TimeUtil {
         int sec = calendar.get(Calendar.SECOND);
         int min = calendar.get(Calendar.MINUTE);
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        if (hour <= 8 || hour > 20) {
-            if (hour > 20) {
-                nextRefreshCountDownTimerView.setTime(32 - hour, 59 - min, 59 - sec);
+        XLog.d(Constants.TAG, "hour --> " + hour + " min --> " + min + " sec --> " + sec);
+        if (hour <= 7 || hour > 19) {
+            if (hour > 19) {
+                nextRefreshCountDownTimerView.setTime(31 - hour, 59 - min, 59 - sec);
             } else {
-                nextRefreshCountDownTimerView.setTime(8 - hour, 59 - min, 59 - sec);
+                nextRefreshCountDownTimerView.setTime(7 - hour, 59 - min, 59 - sec);
             }
-        } else if (hour <= 12 && hour > 8) {
-            nextRefreshCountDownTimerView.setTime(12 - hour, 59 - min, 59 - sec);
-        } else if (hour <= 20 && hour > 12) {
-            nextRefreshCountDownTimerView.setTime(20 - hour, 59 - min, 59 - sec);
+        } else if (hour <= 11 && hour > 7) {
+            nextRefreshCountDownTimerView.setTime(11 - hour, 59 - min, 59 - sec);
+        } else if (hour <= 19 && hour > 11) {
+            nextRefreshCountDownTimerView.setTime(19 - hour, 59 - min, 59 - sec);
         }
         nextRefreshCountDownTimerView.start();
     }

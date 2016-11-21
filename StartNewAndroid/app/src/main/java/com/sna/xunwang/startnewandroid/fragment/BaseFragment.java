@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.sna.xunwang.startnewandroid.app.SNAApplication;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.XLog;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -68,4 +70,15 @@ public abstract class BaseFragment extends Fragment {
 
     public abstract void initViews();
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(SNAApplication.getInstance());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(SNAApplication.getInstance());
+    }
 }

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.XLog;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -33,4 +34,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     public abstract void initToolBar();
 
     public abstract void initData();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 }

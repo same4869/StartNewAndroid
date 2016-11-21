@@ -13,4 +13,6 @@ public class Constants {
 
     public static final int EVER_TIME_SHOW = 7;
 
+    public static final String U_MENG_APPKEY = "5832595d75ca354579000dac";
+
 }
