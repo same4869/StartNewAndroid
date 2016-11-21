@@ -87,7 +87,7 @@
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     app:cracksColor="@color/theme"
-                    app:edgeColor="@color/bar_theme"
+                    app:edgeColor="#777777"
                     app:fillColor="#ff0000"
                     app:unlikeType="1"
                     />
