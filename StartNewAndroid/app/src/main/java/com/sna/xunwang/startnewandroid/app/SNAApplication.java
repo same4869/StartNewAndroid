@@ -1,6 +1,8 @@
 package com.sna.xunwang.startnewandroid.app;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.sna.xunwang.startnewandroid.config.Constants;
 
@@ -23,6 +25,10 @@ public class SNAApplication extends Application {
 
     public static SNAApplication getInstance() {
         return instance;
+    }
+
+    public SharedPreferences getSNASharedPreferences(String tbl) {
+        return getSharedPreferences(tbl, Context.MODE_PRIVATE);
     }
 
     private void initBomb() {
