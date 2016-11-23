@@ -7,6 +7,8 @@ import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.bmob.v3.BmobUser;
+
 /**
  * Created by xunwang on 16/11/18.
  */
@@ -92,7 +94,30 @@ public class BiezhiGoodsDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
         }
         if (cursor != null) {
             cursor.close();
+            mHelper.close();
         }
         return datas;
+    }
+
+
+    public List<BiezhiGoodsBean> getUserFav() {
+        List<BiezhiGoodsBean> lists = new ArrayList<BiezhiGoodsBean>();
+        String where = "userid = '" + BmobUser.getCurrentUser().getObjectId();
+        String[] columns = {"ID", "TITLE", "URL", "PRICE", "PIC_URL"};
+        Cursor cursor = mHelper.query(getTable(), columns, where, null, null, null, null);
+        while (cursor.moveToNext()) {
+            BiezhiGoodsBean biezhiGoodsBean = new BiezhiGoodsBean();
+            biezhiGoodsBean.setId(cursor.getString(cursor.getColumnIndex("ID")));
+            biezhiGoodsBean.setTitle(cursor.getString(cursor.getColumnIndex("TITLE")));
+            biezhiGoodsBean.setUrl(cursor.getString(cursor.getColumnIndex("URL")));
+            biezhiGoodsBean.setPrice(cursor.getString(cursor.getColumnIndex("PRICE")));
+            biezhiGoodsBean.setPicUrl(cursor.getString(cursor.getColumnIndex("PIC_URL")));
+            lists.add(biezhiGoodsBean);
+        }
+        if (cursor != null) {
+            cursor.close();
+            mHelper.close();
+        }
+        return lists;
     }
 }

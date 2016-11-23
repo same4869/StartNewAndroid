@@ -18,8 +18,10 @@ import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.activity.BiezhiDetailActivity;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
+import com.sna.xunwang.startnewandroid.bean.UserBean;
 import com.sna.xunwang.startnewandroid.comm.MultiThreadAsyncTask;
 import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.db.CollectDBHelper;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 import com.wang.avi.AVLoadingIndicatorView;
@@ -30,6 +32,10 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobRelation;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
@@ -82,6 +88,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             Glide.with(mContext).load(biezhiGoodBeanlist.get(position).getPicUrl()).animate(R.anim.item_alpha_in).into
                     (holder.biezhiPic);
             holder.biezhiPrice.setText(biezhiGoodBeanlist.get(position).getPrice());
+            holder.danmakuContext = DanmakuContext.create();
             holder.biezhiLoadingView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -90,9 +97,8 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                     HashMap<Integer, Boolean> overlappingEnablePair = new HashMap<Integer, Boolean>();
                     overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_LR, true);
                     overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_BOTTOM, true);
-                    holder.danmakuContext = DanmakuContext.create();
                     holder.danmakuContext.setDanmakuStyle(IDisplayer.DANMAKU_STYLE_STROKEN, 2)
-                            .setScaleTextSize(1.0f).setDuplicateMergingEnabled(true).setScrollSpeedFactor(0.6f)
+                            .setScaleTextSize(1.0f).setDuplicateMergingEnabled(true).setScrollSpeedFactor(1.0f)
                             .preventOverlapping(overlappingEnablePair);
                 }
             }, 1500);
@@ -129,11 +135,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             holder.thumbUpView.setOnThumbUp(new ThumbUpView.OnThumbUp() {
                 @Override
                 public void like(boolean like) {
-                    if (like) {
-                        ToastUtil.showToast(mContext, "收藏成功", TastyToast.SUCCESS);
-                    } else {
-                        ToastUtil.showToast(mContext, "取消收藏成功", TastyToast.SUCCESS);
-                    }
+                    onClickFav(biezhiGoodBeanlist.get(position), like);
                 }
             });
         } else {
@@ -206,7 +208,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             public void run() {
                 for (int i = 0; i < 30; i++) {
                     if (showDanmaku) {
-                        int time = new Random().nextInt(300);
+                        int time = new Random().nextInt(1000);
                         String content = "" + time + time + "我是第" + i + "个弹幕";
                         addDanmaku(danmakuContext, danmakuView, content, false);
                         try {
@@ -257,6 +259,49 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             return biezhiGoodBeanlist.size();
         }
         return Constants.EVER_TIME_SHOW;
+    }
+
+    private void onClickFav(final BiezhiGoodsBean biezhiGoodsBean, boolean isLike) {
+        UserBean user = BmobUser.getCurrentUser(UserBean.class);
+        if (user != null && user.getSessionToken() != null) {
+            BmobRelation favRelaton = new BmobRelation();
+            biezhiGoodsBean.setMyFav(isLike);
+            if (isLike) {
+                favRelaton.add(biezhiGoodsBean);
+                biezhiGoodsBean.setRelation(favRelaton);
+                user.setFavorite(favRelaton);
+                user.update(new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        XLog.d(Constants.TAG, "e == null ? --> " + (e == null) + " e --> " + e.getMessage());
+                        if (e == null) {
+                            CollectDBHelper.getInstance().insertFav(biezhiGoodsBean);
+                            ToastUtil.showToast(mContext, "收藏成功", TastyToast.SUCCESS);
+                        } else {
+                            ToastUtil.showToast(mContext, "收藏失败。请检查网络~", TastyToast.ERROR);
+                        }
+                    }
+                });
+            } else {
+                favRelaton.remove(biezhiGoodsBean);
+                user.setFavorite(favRelaton);
+                biezhiGoodsBean.setRelation(favRelaton);
+                user.update(new UpdateListener() {
+                    @Override
+                    public void done(BmobException e) {
+                        XLog.d(Constants.TAG, "e == null ? --> " + (e == null) + " e --> " + e.getMessage());
+                        if (e != null) {
+                            ToastUtil.showToast(mContext, "取消收藏失败。请检查网络~", TastyToast.ERROR);
+                        } else {
+                            ToastUtil.showToast(mContext, "取消收藏成功", TastyToast.SUCCESS);
+                            CollectDBHelper.getInstance().deleteFav(biezhiGoodsBean);
+                        }
+                    }
+                });
+            }
+        } else {
+            ToastUtil.showToast(mContext, "登录后收藏可永久保存", TastyToast.SUCCESS);
+        }
     }
 
     public static class BiezhiViewHolder extends RecyclerView.ViewHolder {

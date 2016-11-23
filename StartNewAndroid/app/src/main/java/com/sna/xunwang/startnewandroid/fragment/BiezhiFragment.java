@@ -60,8 +60,8 @@ public class BiezhiFragment extends BaseFragment {
     private void prepareRequeset() {
         List<String> lists = new ArrayList<>();
         for (int i = 0; i < Constants.EVER_TIME_SHOW; i++) {
-            //暂时展示13000-14000的数据,后续再定逻辑
-            String num = String.valueOf((int) (Math.random() * 1000) + 13000);
+            //暂时展示14000-14999的数据,后续再定逻辑
+            String num = String.valueOf((int) (Math.random() * 1000) + 14000);
             lists.add(num);
             XLog.d(Constants.TAG, "num --> " + num);
         }

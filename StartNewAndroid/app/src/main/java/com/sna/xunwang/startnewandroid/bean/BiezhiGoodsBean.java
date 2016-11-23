@@ -1,6 +1,7 @@
 package com.sna.xunwang.startnewandroid.bean;
 
 import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.datatype.BmobRelation;
 
 /**
  * Created by xunwang on 16/11/9.
@@ -12,6 +13,9 @@ public class BiezhiGoodsBean extends BmobObject {
     private String url;
     private String price;
     private String picUrl;
+
+    private BmobRelation relation;// 评论
+    private boolean myFav;// 收藏
 
     public String getId() {
         return id;
@@ -53,4 +57,19 @@ public class BiezhiGoodsBean extends BmobObject {
         this.picUrl = picUrl;
     }
 
+    public BmobRelation getRelation() {
+        return relation;
+    }
+
+    public void setRelation(BmobRelation relation) {
+        this.relation = relation;
+    }
+
+    public boolean isMyFav() {
+        return myFav;
+    }
+
+    public void setMyFav(boolean myFav) {
+        this.myFav = myFav;
+    }
 }
