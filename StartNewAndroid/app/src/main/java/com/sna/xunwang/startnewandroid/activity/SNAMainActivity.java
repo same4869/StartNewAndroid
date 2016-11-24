@@ -3,6 +3,7 @@ package com.sna.xunwang.startnewandroid.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -11,6 +12,7 @@ import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.fragment.BiezhiFragment;
 import com.sna.xunwang.startnewandroid.fragment.OtherFragment;
 import com.sna.xunwang.startnewandroid.fragment.UserFragment;
+import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class SNAMainActivity extends BaseActivity {
     Toolbar toolbar;
 
     private List<Fragment> fragments = new ArrayList<>();
+    private long mExitTime;
 
     @Override
     public int getLayoutId() {
@@ -90,5 +93,18 @@ public class SNAMainActivity extends BaseActivity {
 
     private void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, fragment).commitAllowingStateLoss();
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                ToastUtil.showToast(this, "再按一次退出程序");
+                mExitTime = System.currentTimeMillis();
+            } else {
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -1,9 +1,13 @@
 package com.sna.xunwang.startnewandroid.utils;
 
+import android.annotation.SuppressLint;
+
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.view.NextRefreshCountDownTimerView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by xunwang on 16/11/10.
@@ -31,5 +35,21 @@ public class TimeUtil {
             nextRefreshCountDownTimerView.setTime(19 - hour, 59 - min, 59 - sec);
         }
         nextRefreshCountDownTimerView.start();
+    }
+
+    /** 转换获取出入的字符串时间值 */
+    @SuppressLint("SimpleDateFormat")
+    public static String getStringTime(String strTime) {
+        SimpleDateFormat sd = new SimpleDateFormat("MM-dd" + "\0\0" + "HH:" + "mm");
+        long sTime = Long.valueOf(strTime);
+
+        return sd.format(new Date(sTime * 1000));
+    }
+
+    /** 获取并格式化当前时间值 */
+    @SuppressLint("SimpleDateFormat")
+    public static String getCurrentTime(long date) {
+        SimpleDateFormat sd = new SimpleDateFormat("MM-dd" + "\t" + "HH:" + "mm");
+        return sd.format(date);
     }
 }
