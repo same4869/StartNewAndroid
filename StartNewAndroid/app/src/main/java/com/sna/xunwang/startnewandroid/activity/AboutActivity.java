@@ -41,7 +41,7 @@ public class AboutActivity extends BaseActivity {
             goToDevModeCount++;
             if (goToDevModeCount > 9) {
                 ToastUtil.showToast(getApplicationContext(), "进入开发者模式");
-                Intent intent = new Intent(AboutActivity.this, DevChatActivity.class);
+                Intent intent = new Intent(AboutActivity.this, DevChatListActivity.class);
                 startActivity(intent);
             }
         }

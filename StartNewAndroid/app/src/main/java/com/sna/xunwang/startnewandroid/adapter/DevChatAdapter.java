@@ -21,10 +21,16 @@ import butterknife.ButterKnife;
 public class DevChatAdapter extends RecyclerView.Adapter<DevChatAdapter.DevChatAdapterHolder> {
     private Context mContext;
     private List<String> lists;
+    private OnItemClickListener onItemClickListener;
 
     public DevChatAdapter(Context mContext, List<String> lists) {
         this.mContext = mContext;
         this.lists = lists;
+    }
+
+    public void setData(List<String> lists) {
+        this.lists = lists;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -36,15 +42,31 @@ public class DevChatAdapter extends RecyclerView.Adapter<DevChatAdapter.DevChatA
     }
 
     @Override
-    public void onBindViewHolder(DevChatAdapterHolder holder, int position) {
+    public void onBindViewHolder(DevChatAdapterHolder holder, final int position) {
         if (lists != null) {
             holder.devChatTv.setText(lists.get(position));
+            holder.devChatTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(position);
+                    }
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
         return lists.size();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
     }
 
     public static class DevChatAdapterHolder extends RecyclerView.ViewHolder {

@@ -1,5 +1,6 @@
 package com.sna.xunwang.startnewandroid.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,11 +11,9 @@ import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.adapter.FeedbackUIAdapter;
 import com.sna.xunwang.startnewandroid.bean.FeedbackToBmobBean;
 import com.sna.xunwang.startnewandroid.bean.FeedbackUIBean;
-import com.sna.xunwang.startnewandroid.bean.UserBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.StringUtil;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
-import com.sna.xunwang.startnewandroid.utils.UserUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 
 import java.util.ArrayList;
@@ -29,18 +28,20 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
-public class FeedbackActivity extends BaseActivity {
-    private FeedbackUIAdapter adapter;
-    private UserBean userBean;
-    private LinkedList<FeedbackUIBean> beans = new LinkedList<FeedbackUIBean>();
+public class DevChatDetailActivity extends BaseActivity {
+    public static final String USER_NAME_KEY = "user_name_key";
 
     @BindView(R.id.feedback_lvMessages_rv)
     RecyclerView messageRv;
     @BindView(R.id.feedback_edt)
     EditText enterTx;
 
+    private FeedbackUIAdapter adapter;
+    private LinkedList<FeedbackUIBean> sList = new LinkedList<FeedbackUIBean>();
+    private LinkedList<FeedbackUIBean> beans = new LinkedList<FeedbackUIBean>();
+    private String curUsername;
     private int sum;
-    private String welcomeStr = "你好你好你好";
+
 
     @Override
     public int getLayoutId() {
@@ -49,19 +50,17 @@ public class FeedbackActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-
-    }
-
-    @Override
-    public void initToolBar() {
-
-    }
-
-    @Override
-    public void initData() {
-        userBean = UserUtil.getUserInfo();
-        if (userBean == null) {
+        Intent intent = getIntent();
+        if (intent == null) {
             return;
+        }
+
+        curUsername = intent.getStringExtra(USER_NAME_KEY);
+
+
+        // 归放到 同一个 类集合Bean中
+        for (int j = 0; j < sList.size(); j++) {
+            beans.add(sList.get(j));
         }
 
         adapter = new FeedbackUIAdapter(this, beans);
@@ -73,58 +72,39 @@ public class FeedbackActivity extends BaseActivity {
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         linearLayoutManager.setAutoMeasureEnabled(true);
         messageRv.setHasFixedSize(true);
-
-        requestAllMsgInUser(userBean.getUsername());
     }
 
-    private void initWelcome() {
-        adapter.addItemNotifiChange(new FeedbackUIBean(welcomeStr, R.drawable
-                .about_icon, new Date() + "", 1));
+    @Override
+    public void initToolBar() {
+
+    }
+
+    @Override
+    public void initData() {
+        requestAllMsgInUser();
     }
 
     @OnClick(R.id.feedback_enter)
     void startSend() {
         if (!StringUtil.isStringNullorBlank(enterTx.getText().toString())) {
-            sendMessageToDev(enterTx.getText().toString());
+            sendMessageToUser(enterTx.getText().toString());
             enterTx.setText("");
         }
     }
 
-    private void sendMessageToDev(String msg) {
+    private void sendMessageToUser(String msg) {
         if (StringUtil.isStringNullorBlank(msg)) {
             ToastUtil.showToast(getApplicationContext(), "内容不要为空噢", TastyToast.ERROR);
             return;
         }
-        if (userBean == null) {
-            ToastUtil.showToast(getApplicationContext(), "请先登录哈", TastyToast.INFO);
-            finish();
-        }
         XLog.d(Constants.TAG, "sendMessageToDev");
-        updateFeedbackMsgToBmob(userBean.getUsername(), msg);
-        adapter.addItemNotifiChange(new FeedbackUIBean(msg, R.drawable.about_icon, new Date() + "", 0));
+        updateFeedbackMsgToBmob("dev", msg);
+        adapter.addItemNotifiChange(new FeedbackUIBean(msg, R.drawable.about_icon, new Date() + "", 1));
         sum++;
         messageRv.smoothScrollToPosition(sum);
     }
 
-    private void updateFeedbackMsgToBmob(String username, String text) {
-        final FeedbackToBmobBean feedbackToBmobBean = new FeedbackToBmobBean();
-        feedbackToBmobBean.setUsername(username);
-        feedbackToBmobBean.setText(text);
-        feedbackToBmobBean.setTarget("dev");
-        feedbackToBmobBean.save(new SaveListener<String>() {
-            @Override
-            public void done(String s, BmobException e) {
-                if (e == null) {
-                    XLog.d(Constants.TAG, "添加反馈数据成功 用户名 --》" + feedbackToBmobBean.getUsername() + " 消息 --》" +
-                            feedbackToBmobBean.getText());
-                } else {
-                    XLog.d(Constants.TAG, "添加反馈数据失败 e.getMessage() --> " + e.getMessage());
-                }
-            }
-        });
-    }
-
-    private void requestAllMsgInUser(final String curUsername) {
+    private void requestAllMsgInUser() {
         BmobQuery<FeedbackToBmobBean> eq1 = new BmobQuery<FeedbackToBmobBean>();
         eq1.addWhereEqualTo("username", curUsername);
 
@@ -161,9 +141,26 @@ public class FeedbackActivity extends BaseActivity {
                         sum++;
                     }
                     messageRv.smoothScrollToPosition(sum);
-                    initWelcome();
                 } else {
 
+                }
+            }
+        });
+    }
+
+    private void updateFeedbackMsgToBmob(String username, String text) {
+        final FeedbackToBmobBean feedbackToBmobBean = new FeedbackToBmobBean();
+        feedbackToBmobBean.setUsername(username);
+        feedbackToBmobBean.setText(text);
+        feedbackToBmobBean.setTarget(curUsername);
+        feedbackToBmobBean.save(new SaveListener<String>() {
+            @Override
+            public void done(String s, BmobException e) {
+                if (e == null) {
+                    XLog.d(Constants.TAG, "添加反馈数据成功 用户名 --》" + feedbackToBmobBean.getUsername() + " 消息 --》" +
+                            feedbackToBmobBean.getText());
+                } else {
+                    XLog.d(Constants.TAG, "添加反馈数据失败 e.getMessage() --> " + e.getMessage());
                 }
             }
         });

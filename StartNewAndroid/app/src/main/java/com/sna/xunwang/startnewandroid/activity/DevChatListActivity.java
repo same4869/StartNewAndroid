@@ -1,12 +1,12 @@
 package com.sna.xunwang.startnewandroid.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.adapter.DevChatAdapter;
-import com.sna.xunwang.startnewandroid.bean.FeedbackToBmobBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 
@@ -19,11 +19,12 @@ import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 
-public class DevChatActivity extends BaseActivity {
+public class DevChatListActivity extends BaseActivity {
     @BindView(R.id.dev_lvMessages_rv)
     RecyclerView recyclerView;
 
     private DevChatAdapter adapter;
+    private List<String> list = new ArrayList<>();
 
     @Override
     public int getLayoutId() {
@@ -32,10 +33,6 @@ public class DevChatActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-        List<String> list = new ArrayList<>();
-        list.add("所说的风格的");
-        list.add("asdasdfasd");
-        list.add("阿斯顿发生");
         adapter = new DevChatAdapter(this, list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -55,6 +52,14 @@ public class DevChatActivity extends BaseActivity {
     @Override
     public void initData() {
         requestUsers();
+        adapter.setOnItemClickListener(new DevChatAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Intent intent = new Intent(DevChatListActivity.this, DevChatDetailActivity.class);
+                intent.putExtra(DevChatDetailActivity.USER_NAME_KEY, list.get(position));
+                startActivity(intent);
+            }
+        });
     }
 
     private void requestUsers() {
@@ -66,27 +71,11 @@ public class DevChatActivity extends BaseActivity {
                     XLog.d(Constants.TAG, "object.size() --> " + object.size());
                     for (int i = 0; i < object.size(); i++) {
                         XLog.d(Constants.TAG, "object.get(i).getUsername() --> " + object.get(i).getUsername());
-                        requestUserMsg(object.get(i).getUsername());
+                        list.add(object.get(i).getUsername());
+                        adapter.setData(list);
                     }
                 } else {
                     XLog.d(Constants.TAG, e.getMessage());
-                }
-            }
-        });
-    }
-
-    private void requestUserMsg(final String username) {
-        BmobQuery<FeedbackToBmobBean> query = new BmobQuery<FeedbackToBmobBean>();
-        query.addWhereEqualTo("username", username);
-        query.findObjects(new FindListener<FeedbackToBmobBean>() {
-            @Override
-            public void done(List<FeedbackToBmobBean> list, BmobException e) {
-                if (e == null) {
-                    for (int i = 0; i < list.size(); i++) {
-                        XLog.d(Constants.TAG, "username --> " + username + "list.get(i).getText() --> " + list.get(i).getText());
-                    }
-                } else {
-
                 }
             }
         });

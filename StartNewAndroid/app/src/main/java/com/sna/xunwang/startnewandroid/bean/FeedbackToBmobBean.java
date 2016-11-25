@@ -9,6 +9,15 @@ import cn.bmob.v3.BmobObject;
 public class FeedbackToBmobBean extends BmobObject {
     private String username;
     private String text;
+    private String target;
+
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+    }
 
     public String getUsername() {
         return username;
