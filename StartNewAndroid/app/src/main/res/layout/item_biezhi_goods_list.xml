@@ -82,14 +82,10 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.ldoublem.thumbUplib.ThumbUpView
+                <com.sna.xunwang.startnewandroid.view.ThumbUpView
                     android:id="@+id/bz_collect"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    app:cracksColor="@color/theme"
-                    app:edgeColor="#777777"
-                    app:fillColor="#ff0000"
-                    app:unlikeType="1"
                     />
 
                 <ImageView

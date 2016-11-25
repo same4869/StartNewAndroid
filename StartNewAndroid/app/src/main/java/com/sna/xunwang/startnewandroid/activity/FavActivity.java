@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.adapter.BiezhiGoodsAdapter;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.bean.UserBean;
+import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -64,21 +66,19 @@ public class FavActivity extends BaseActivity {
         BmobQuery<BiezhiGoodsBean> query = new BmobQuery<BiezhiGoodsBean>();
         query.addWhereRelatedTo("favorite", new BmobPointer(user));
         query.order("-createdAt");
+        query.setLimit(50);
         BmobDate date = new BmobDate(new Date(System.currentTimeMillis()));
         query.addWhereLessThan("createdAt", date);
         query.findObjects(new FindListener<BiezhiGoodsBean>() {
             @Override
             public void done(List<BiezhiGoodsBean> list, BmobException e) {
                 if (e == null) {
+                    for (int i = 0; i < list.size(); i++) {
+                        list.get(i).setMyFav(true);
+                    }
                     biezhiGoodsAdapter.setData(list);
-//                    CollectDBHelper.getInstance().setFav(list);
                 } else {
-//                    List<BiezhiGoodsBean> dbList = BiezhiGoodsDBHelper.getInstance().getUserFav();
-//                    if (dbList != null && dbList.size() > 0) {
-//                        biezhiGoodsAdapter.setData(dbList);
-//                    } else {
-//
-//                    }
+                    ToastUtil.showToast(getApplicationContext(), "网络可能不给力,请重试", TastyToast.ERROR);
                 }
             }
         });

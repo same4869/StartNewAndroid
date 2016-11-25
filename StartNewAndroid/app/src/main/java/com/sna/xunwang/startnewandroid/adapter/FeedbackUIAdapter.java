@@ -24,6 +24,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.v3.datatype.BmobFile;
 
+import static android.R.attr.type;
+
 /**
  * Created by xunwang on 16/11/23.
  */
@@ -58,13 +60,15 @@ public class FeedbackUIAdapter extends RecyclerView.Adapter<FeedbackUIAdapter.Fe
         if (feedbackUIList != null) {
             FeedbackUIBean bean = feedbackUIList.get(position);
             UserBean userBean = UserUtil.getUserInfo();
-            BmobFile avatarFile = userBean.getAvatar();
             String avaterUrl = null;
-            int type = getItemViewType(position);
-            if (avatarFile != null) {
-                avaterUrl = avatarFile.getFileUrl();
+            if(userBean != null) {
+                BmobFile avatarFile = userBean.getAvatar();
+                int type = getItemViewType(position);
+                if (avatarFile != null) {
+                    avaterUrl = avatarFile.getFileUrl();
+                }
+                XLog.d(Constants.TAG, "avaterUrl --> " + avaterUrl + " type --> " + type);
             }
-            XLog.d(Constants.TAG, "avaterUrl --> " + avaterUrl + " type --> " + type);
             holder.time.setText(TimeUtil.getCurrentTime(new Date().getTime()));
             holder.message.setText(bean.gettMessage());
             if (type == TYPE_0) {

@@ -148,11 +148,6 @@ public class UserFragment extends BaseFragment {
         startActivity(intent);
     }
 
-    @OnClick(R.id.user_theme_layout)
-    void theme() {
-
-    }
-
     @OnClick(R.id.user_app_layout)
     void app() {
 

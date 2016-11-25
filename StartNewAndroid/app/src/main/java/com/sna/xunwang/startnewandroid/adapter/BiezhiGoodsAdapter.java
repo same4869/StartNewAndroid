@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ldoublem.thumbUplib.ThumbUpView;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.activity.BiezhiDetailActivity;
@@ -24,6 +23,7 @@ import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.db.CollectDBHelper;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
+import com.sna.xunwang.startnewandroid.view.ThumbUpView;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.HashMap;
@@ -88,6 +88,11 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             Glide.with(mContext).load(biezhiGoodBeanlist.get(position).getPicUrl()).animate(R.anim.item_alpha_in).into
                     (holder.biezhiPic);
             holder.biezhiPrice.setText(biezhiGoodBeanlist.get(position).getPrice());
+            if (biezhiGoodBeanlist.get(position).isMyFav()) {
+                holder.thumbUpView.setLikeSt(ThumbUpView.LikeType.like);
+            } else {
+                holder.thumbUpView.setLikeSt(ThumbUpView.LikeType.unlike);
+            }
             holder.danmakuContext = DanmakuContext.create();
             holder.biezhiLoadingView.postDelayed(new Runnable() {
                 @Override

@@ -3,7 +3,9 @@ package com.sna.xunwang.startnewandroid.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
@@ -29,7 +31,8 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.SaveListener;
 
-public class FeedbackActivity extends BaseActivity {
+
+public class FeedbackActivity extends BaseActivity implements View.OnLayoutChangeListener {
     private FeedbackUIAdapter adapter;
     private UserBean userBean;
     private LinkedList<FeedbackUIBean> beans = new LinkedList<FeedbackUIBean>();
@@ -38,9 +41,13 @@ public class FeedbackActivity extends BaseActivity {
     RecyclerView messageRv;
     @BindView(R.id.feedback_edt)
     EditText enterTx;
+    @BindView(R.id.root_view)
+    RelativeLayout rootView;
 
     private int sum;
     private String welcomeStr = "你好你好你好";
+    private int screenHeight;
+    private int keyHeight;
 
     @Override
     public int getLayoutId() {
@@ -49,12 +56,20 @@ public class FeedbackActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
-
+        screenHeight = this.getWindowManager().getDefaultDisplay().getHeight();
+        //阀值设置为屏幕高度的1/3
+        keyHeight = screenHeight / 3;
     }
 
     @Override
     public void initToolBar() {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        rootView.addOnLayoutChangeListener(this);
     }
 
     @Override
@@ -167,5 +182,20 @@ public class FeedbackActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onLayoutChange(View v, int left, int top, int right,
+                               int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        //现在认为只要控件将Activity向上推的高度超过了1/3屏幕高，就认为软键盘弹起
+        if (oldBottom != 0 && bottom != 0 && (oldBottom - bottom > keyHeight)) {
+            XLog.d(Constants.TAG, "软键盘弹起");
+            messageRv.smoothScrollToPosition(sum);
+
+        } else if (oldBottom != 0 && bottom != 0 && (bottom - oldBottom > keyHeight)) {
+            XLog.d(Constants.TAG, "软键盘收起");
+            messageRv.smoothScrollToPosition(sum);
+
+        }
     }
 }
