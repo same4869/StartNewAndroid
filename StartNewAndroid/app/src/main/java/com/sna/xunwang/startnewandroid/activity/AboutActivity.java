@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.sna.xunwang.startnewandroid.R;
+import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 
 import butterknife.OnClick;
@@ -40,9 +41,11 @@ public class AboutActivity extends BaseActivity {
         } else {
             goToDevModeCount++;
             if (goToDevModeCount > 9) {
-                ToastUtil.showToast(getApplicationContext(), "进入开发者模式");
-                Intent intent = new Intent(AboutActivity.this, DevChatListActivity.class);
-                startActivity(intent);
+                if (Constants.IS_DEBUG) {
+                    ToastUtil.showToast(getApplicationContext(), "进入开发者模式");
+                    Intent intent = new Intent(AboutActivity.this, DevChatListActivity.class);
+                    startActivity(intent);
+                }
             }
         }
     }

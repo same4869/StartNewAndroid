@@ -28,6 +28,9 @@ public class CommWebviewActivity extends BaseActivity {
     @BindView(R.id.common_webview)
     WebView commonWebView;
 
+    private String lastUrl1, lastUrl2;
+    private int i;
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_comm_webview;
@@ -78,9 +81,17 @@ public class CommWebviewActivity extends BaseActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Log.d(Constants.TAG, "url --> " + url);
+            if (i % 2 == 0) {
+                lastUrl1 = url;
+            } else {
+                lastUrl2 = url;
+            }
+            i++;
+            if (lastUrl1.equals(lastUrl2)) {
+                finish();
+            }
             if (url.startsWith("taobao") || url.startsWith("tmall")) {
                 try {
-                    // 以下固定写法
                     final Intent intent = new Intent(Intent.ACTION_VIEW,
                             Uri.parse(url));
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK

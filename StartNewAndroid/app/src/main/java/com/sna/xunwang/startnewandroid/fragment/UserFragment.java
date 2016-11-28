@@ -19,6 +19,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
+import com.sna.xunwang.startnewandroid.activity.APPActivity;
 import com.sna.xunwang.startnewandroid.activity.AboutActivity;
 import com.sna.xunwang.startnewandroid.activity.FavActivity;
 import com.sna.xunwang.startnewandroid.activity.FeedbackActivity;
@@ -150,7 +151,8 @@ public class UserFragment extends BaseFragment {
 
     @OnClick(R.id.user_app_layout)
     void app() {
-
+        Intent intent = new Intent(getActivity(), APPActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.user_about_layout)

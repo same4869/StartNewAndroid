@@ -4,20 +4,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.adapter.DevChatAdapter;
+import com.sna.xunwang.startnewandroid.bean.DevelopItemBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
+import cn.bmob.v3.listener.SaveListener;
 
 public class DevChatListActivity extends BaseActivity {
     @BindView(R.id.dev_lvMessages_rv)
@@ -47,6 +52,30 @@ public class DevChatListActivity extends BaseActivity {
     @Override
     public void initToolBar() {
 
+    }
+
+    @OnClick(R.id.check_develop)
+    void checkDev() {
+        setDevData();
+    }
+
+    private void setDevData() {
+        DevelopItemBean developItemBean = new DevelopItemBean();
+        developItemBean.setItemTitle("传奇霸业");
+        developItemBean.setItemContent("你的时间非常值钱");
+        developItemBean.setItemImgUrl("http://img.7724.com/7724/img/2016/02/02/20160202091211_21193.jpg");
+        developItemBean.setItemUrl("http://www.7724.com/bzdld/game");
+        developItemBean.save(new SaveListener<String>() {
+
+            @Override
+            public void done(String objectId, BmobException e) {
+                if (e == null) {
+                    ToastUtil.showToast(getApplicationContext(), "hehe");
+                } else {
+                    Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
+                }
+            }
+        });
     }
 
     @Override

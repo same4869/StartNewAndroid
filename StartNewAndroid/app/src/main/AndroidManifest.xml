@@ -115,6 +115,8 @@
         </activity>
         <activity android:name=".activity.DevChatDetailActivity">
         </activity>
+        <activity android:name=".activity.APPActivity">
+        </activity>
     </application>
 
 </manifest>

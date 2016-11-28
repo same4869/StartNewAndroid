@@ -26,7 +26,7 @@ public class SNADatabaseHelper extends AbstractDatabaseHelper {
                         ",PIC_URL VARCHAR(100))",
                 "CREATE TABLE IF NOT EXISTS FAV_GOODS("
                         + "_id INTEGER PRIMARY KEY AUTOINCREMENT"
-                        + ",userid VARCHAR(100)" + ",objectid VARCHAR(100)" + ",isfav VARCHAR(100)"};
+                        + ",userid VARCHAR(100)" + ",objectid VARCHAR(100)" + ",isfav VARCHAR(100))"};
         return object;
     }
 

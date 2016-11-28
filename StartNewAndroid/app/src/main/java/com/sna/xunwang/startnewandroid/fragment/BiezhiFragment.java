@@ -65,7 +65,12 @@ public class BiezhiFragment extends BaseFragment {
             lists.add(num);
             XLog.d(Constants.TAG, "num --> " + num);
         }
-        requesetBiezhiGoodsInfo(lists);
+        if (TimeUtil.IsBiezhiRefresh(System.currentTimeMillis())) {
+            requesetBiezhiGoodsInfo(lists);
+        } else {
+            List<BiezhiGoodsBean> datas = BiezhiGoodsDBHelper.getInstance().getAllData();
+            biezhiGoodsAdapter.setData(datas);
+        }
     }
 
     private void requesetBiezhiGoodsInfo(List<String> randoms) {
@@ -75,6 +80,7 @@ public class BiezhiFragment extends BaseFragment {
                     @Override
                     public void done(List<BiezhiGoodsBean> object, BmobException e) {
                         if (e == null) {
+                            BiezhiGoodsDBHelper.getInstance().deleteAll();
                             XLog.d(Constants.TAG, "object.size() --> " + object.size());
                             for (int i = 0; i < object.size(); i++) {
                                 XLog.d(Constants.TAG, "biezhiGoodBean.getTitle() --> " + object.get(i).getTitle());

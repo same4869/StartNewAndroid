@@ -94,7 +94,6 @@ public class BiezhiGoodsDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
         }
         if (cursor != null) {
             cursor.close();
-            mHelper.close();
         }
         return datas;
     }
@@ -116,7 +115,6 @@ public class BiezhiGoodsDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
         }
         if (cursor != null) {
             cursor.close();
-            mHelper.close();
         }
         return lists;
     }

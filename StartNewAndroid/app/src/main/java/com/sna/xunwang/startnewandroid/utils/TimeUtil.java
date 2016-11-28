@@ -3,6 +3,7 @@ package com.sna.xunwang.startnewandroid.utils;
 import android.annotation.SuppressLint;
 
 import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.sp.SNASetting;
 import com.sna.xunwang.startnewandroid.view.NextRefreshCountDownTimerView;
 
 import java.text.SimpleDateFormat;
@@ -37,7 +38,9 @@ public class TimeUtil {
         nextRefreshCountDownTimerView.start();
     }
 
-    /** 转换获取出入的字符串时间值 */
+    /**
+     * 转换获取出入的字符串时间值
+     */
     @SuppressLint("SimpleDateFormat")
     public static String getStringTime(String strTime) {
         SimpleDateFormat sd = new SimpleDateFormat("MM-dd" + "\0\0" + "HH:" + "mm");
@@ -46,10 +49,40 @@ public class TimeUtil {
         return sd.format(new Date(sTime * 1000));
     }
 
-    /** 获取并格式化当前时间值 */
+    /**
+     * 获取并格式化当前时间值
+     */
     @SuppressLint("SimpleDateFormat")
     public static String getCurrentTime(long date) {
         SimpleDateFormat sd = new SimpleDateFormat("MM-dd" + "\t" + "HH:" + "mm");
         return sd.format(date);
+    }
+
+    /**
+     * 输入当前时间,判断时候需要后台拉新条目
+     */
+    public static boolean IsBiezhiRefresh(long curTime) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(curTime);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int day = calendar.get(Calendar.DAY_OF_YEAR);
+        int year = calendar.get(Calendar.YEAR);
+        if (hour <= 7 || hour > 19) {
+            hour = 20;
+        } else if (hour <= 11 && hour > 7) {
+            hour = 8;
+        } else if (hour <= 19 && hour > 11) {
+            hour = 12;
+        }
+        String lastTime = SNASetting.getBiezhiRefreshTime();
+        String thisTime = "" + year + day + hour;
+        SNASetting.setBiezhiRefreshTime(thisTime);
+        if (lastTime == null) {
+            return true;
+        }
+        if (lastTime.equals(thisTime)) {
+            return false;
+        }
+        return true;
     }
 }
