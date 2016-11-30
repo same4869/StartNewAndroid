@@ -7,7 +7,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.moxun.tagcloudlib.view.TagCloudView;
 import com.sna.xunwang.startnewandroid.R;
+import com.sna.xunwang.startnewandroid.adapter.TextTagsAdapter;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.manager.ShareManager;
 
@@ -22,6 +24,8 @@ public class BiezhiDetailActivity extends BaseActivity {
     TextView detailTitle;
     @BindView(R.id.bzd_detail_source)
     TextView detailSource;
+    @BindView(R.id.tag_cloud)
+    TagCloudView tagCloudView;
 
     private String url;
     private BiezhiGoodsBean dailyBean;
@@ -33,6 +37,8 @@ public class BiezhiDetailActivity extends BaseActivity {
 
     @Override
     public void initViews(Bundle savedInstanceState) {
+        TextTagsAdapter tagsAdapter = new TextTagsAdapter(new String[13]);
+        tagCloudView.setAdapter(tagsAdapter);
     }
 
     @Override

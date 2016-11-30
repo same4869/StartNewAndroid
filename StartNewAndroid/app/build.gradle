@@ -46,4 +46,5 @@ dependencies {
 //    compile 'com.ldoublem.thumbUplib:ThumbUplib:0.2'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile 'com.makeramen:roundedimageview:2.2.1'
+    compile 'com.moxun:tagcloudlib:1.2.0'
 }

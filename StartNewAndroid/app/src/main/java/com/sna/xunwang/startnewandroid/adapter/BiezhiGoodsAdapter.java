@@ -306,7 +306,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                 });
             }
         } else {
-            ToastUtil.showToast(mContext, "登录后收藏可永久保存", TastyToast.SUCCESS);
+            ToastUtil.showToast(mContext, "花5秒注册登录,收藏永久保存", TastyToast.INFO);
         }
     }
 

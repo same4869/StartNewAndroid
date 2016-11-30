@@ -431,7 +431,7 @@ public class ThumbUpView extends View {
             startViewAnim(0f, 1f, 200, like);
             setTag(false);
 
-        } else if (like == like) {
+        } else if (like == LikeType.like) {
             setTag(true);
             startViewAnim(0f, 1f, 200, like);
 
@@ -460,12 +460,15 @@ public class ThumbUpView extends View {
     public void setLikeSt(LikeType like) {
         if (like == LikeType.unlike) {
             startViewAnim(0f, 1f, 200, like);
+            setTag(false);
 
-        } else if (like == like) {
+        } else if (like == LikeType.like) {
             startViewAnim(0f, 1f, 200, like);
+            setTag(true);
 
         } else if (like == LikeType.broken) {
             startViewAnim(0f, 1f, 400, like);
+            setTag(false);
         }
     }
 
@@ -486,7 +489,7 @@ public class ThumbUpView extends View {
                 if (like == LikeType.unlike) {
                     mAnimatedLikeValue = (float) valueAnimator.getAnimatedValue();
                     mAnimatedLikeValue = 1 - mAnimatedLikeValue;
-                } else if (like == like) {
+                } else if (like == LikeType.like) {
                     mAnimatedLikeValue = (float) valueAnimator.getAnimatedValue();
                     mAnimatedLikeValue = mAnimatedLikeValue + (MaxSize - 1f);
                 } else if (like == LikeType.broken) {
