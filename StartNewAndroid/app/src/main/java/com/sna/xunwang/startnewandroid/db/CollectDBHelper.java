@@ -87,14 +87,13 @@ public class CollectDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
         }
         if (cursor != null) {
             cursor.close();
-            mHelper.close();
         }
     }
 
     public long insertFav(BiezhiGoodsBean biezhiGoodsBean) {
         long uri = 0;
         String where = "userid = '" + BmobUser.getCurrentUser().getObjectId() + "' AND objectid = '"
-                + biezhiGoodsBean.getObjectId() + "'";
+                + biezhiGoodsBean.getId() + "'";
         Cursor cursor = mHelper.query(getTable(), null, where, null, null, null, null);
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -104,13 +103,12 @@ public class CollectDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
         } else {
             ContentValues cv = new ContentValues();
             cv.put("userid", BmobUser.getCurrentUser().getObjectId());
-            cv.put("objectid", biezhiGoodsBean.getObjectId());
+            cv.put("objectid", biezhiGoodsBean.getId());
             cv.put("isfav", biezhiGoodsBean.isMyFav() == true ? 1 : 0);
             uri = mHelper.insert(getTable(), null, cv);
         }
         if (cursor != null) {
             cursor.close();
-            mHelper.close();
         }
         return uri;
     }
@@ -121,7 +119,7 @@ public class CollectDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
             for (Iterator<BiezhiGoodsBean> iterator = lists.iterator(); iterator.hasNext(); ) {
                 BiezhiGoodsBean content = (BiezhiGoodsBean) iterator.next();
                 String where = "userid = '" + BmobUser.getCurrentUser().getObjectId() + "' AND objectid = '"
-                        + content.getObjectId() + "'";
+                        + content.getId() + "'";
                 cursor = mHelper.query(getTable(), null, where, null, null, null, null);
                 if (cursor != null && cursor.getCount() > 0) {
                     cursor.moveToFirst();
@@ -135,7 +133,6 @@ public class CollectDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
         }
         if (cursor != null) {
             cursor.close();
-            mHelper.close();
         }
         return lists;
     }

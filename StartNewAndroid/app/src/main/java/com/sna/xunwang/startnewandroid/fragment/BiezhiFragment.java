@@ -8,7 +8,9 @@ import com.sna.xunwang.startnewandroid.adapter.BiezhiGoodsAdapter;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.config.Constants;
 import com.sna.xunwang.startnewandroid.db.BiezhiGoodsDBHelper;
+import com.sna.xunwang.startnewandroid.db.CollectDBHelper;
 import com.sna.xunwang.startnewandroid.utils.TimeUtil;
+import com.sna.xunwang.startnewandroid.utils.UserUtil;
 import com.sna.xunwang.startnewandroid.utils.XLog;
 import com.sna.xunwang.startnewandroid.view.NextRefreshCountDownTimerView;
 
@@ -69,6 +71,9 @@ public class BiezhiFragment extends BaseFragment {
             requesetBiezhiGoodsInfo(lists);
         } else {
             List<BiezhiGoodsBean> datas = BiezhiGoodsDBHelper.getInstance().getAllData();
+            if (UserUtil.isLogined()) {
+                datas = CollectDBHelper.getInstance().setFav(datas);
+            }
             biezhiGoodsAdapter.setData(datas);
         }
     }
@@ -86,15 +91,19 @@ public class BiezhiFragment extends BaseFragment {
                                 XLog.d(Constants.TAG, "biezhiGoodBean.getTitle() --> " + object.get(i).getTitle());
                                 BiezhiGoodsDBHelper.getInstance().save(object.get(i));
                             }
+                            if (UserUtil.isLogined()) {
+                                object = CollectDBHelper.getInstance().setFav(object);
+                            }
                             biezhiGoodsAdapter.setData(object);
                         } else {
                             XLog.d(Constants.TAG, "error：" + e.getMessage() + "," + e.getErrorCode());
                             List<BiezhiGoodsBean> datas = BiezhiGoodsDBHelper.getInstance().getAllData();
+                            if (UserUtil.isLogined()) {
+                                datas = CollectDBHelper.getInstance().setFav(datas);
+                            }
                             biezhiGoodsAdapter.setData(datas);
                         }
                     }
                 });
     }
-
-
 }

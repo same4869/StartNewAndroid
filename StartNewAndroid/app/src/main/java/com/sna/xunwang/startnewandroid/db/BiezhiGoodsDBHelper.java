@@ -45,10 +45,10 @@ public class BiezhiGoodsDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
             return;
         }
         String sql = "insert into " + getTable() + "("
-                + "ID,TITLE,URL,PRICE,PIC_URL"
-                + ")values(?,?,?,?,?)";
+                + "ID,TITLE,URL,PRICE,PIC_URL,objectid"
+                + ")values(?,?,?,?,?,?)";
         Object[] bindArgs = {obj.getId(), obj.getTitle(), obj.getUrl(), obj.getPrice(),
-                obj.getPicUrl()};
+                obj.getPicUrl(), obj.getObjectId()};
         mHelper.execSQL(sql, bindArgs);
     }
 
@@ -81,7 +81,7 @@ public class BiezhiGoodsDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
     @Override
     public List<BiezhiGoodsBean> getAllData() {
         List<BiezhiGoodsBean> datas = new ArrayList<BiezhiGoodsBean>();
-        String[] columns = {"ID", "TITLE", "URL", "PRICE", "PIC_URL"};
+        String[] columns = {"ID", "TITLE", "URL", "PRICE", "PIC_URL", "objectid"};
         Cursor cursor = mHelper.query(getTable(), columns, null, null, null, null, null);
         while (cursor.moveToNext()) {
             BiezhiGoodsBean biezhiGoodsBean = new BiezhiGoodsBean();
@@ -90,6 +90,7 @@ public class BiezhiGoodsDBHelper extends BaseDBHelper<BiezhiGoodsBean> {
             biezhiGoodsBean.setUrl(cursor.getString(cursor.getColumnIndex("URL")));
             biezhiGoodsBean.setPrice(cursor.getString(cursor.getColumnIndex("PRICE")));
             biezhiGoodsBean.setPicUrl(cursor.getString(cursor.getColumnIndex("PIC_URL")));
+            biezhiGoodsBean.setObjectId(cursor.getString(cursor.getColumnIndex("objectid")));
             datas.add(biezhiGoodsBean);
         }
         if (cursor != null) {

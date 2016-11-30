@@ -61,10 +61,10 @@ public class DevChatListActivity extends BaseActivity {
 
     private void setDevData() {
         DevelopItemBean developItemBean = new DevelopItemBean();
-        developItemBean.setItemTitle("传奇霸业");
-        developItemBean.setItemContent("你的时间非常值钱");
-        developItemBean.setItemImgUrl("http://img.7724.com/7724/img/2016/02/02/20160202091211_21193.jpg");
-        developItemBean.setItemUrl("http://www.7724.com/bzdld/game");
+        developItemBean.setItemTitle("语文考试");
+        developItemBean.setItemContent("做回童年的自己");
+        developItemBean.setItemImgUrl("http://img.7724.com/7724/img/2016/03/22/20160322173940_74780.jpg");
+        developItemBean.setItemUrl("http://play.7724.com/olgames/ywks/");
         developItemBean.save(new SaveListener<String>() {
 
             @Override

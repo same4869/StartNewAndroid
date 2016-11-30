@@ -278,11 +278,12 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                 user.update(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
-                        XLog.d(Constants.TAG, "e == null ? --> " + (e == null) + " e --> " + e.getMessage());
                         if (e == null) {
                             CollectDBHelper.getInstance().insertFav(biezhiGoodsBean);
                             ToastUtil.showToast(mContext, "收藏成功", TastyToast.SUCCESS);
                         } else {
+                            XLog.d(Constants.TAG, "e == null ? --> " + (e == null) + " e --> " + e.getMessage() + " e" +
+                                    ".getErrorCode() -->" + e.getErrorCode());
                             ToastUtil.showToast(mContext, "收藏失败。请检查网络~", TastyToast.ERROR);
                         }
                     }
@@ -294,8 +295,8 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                 user.update(new UpdateListener() {
                     @Override
                     public void done(BmobException e) {
-                        XLog.d(Constants.TAG, "e == null ? --> " + (e == null) + " e --> " + e.getMessage());
                         if (e != null) {
+                            XLog.d(Constants.TAG, "e == null ? --> " + (e == null) + " e --> " + e.getMessage());
                             ToastUtil.showToast(mContext, "取消收藏失败。请检查网络~", TastyToast.ERROR);
                         } else {
                             ToastUtil.showToast(mContext, "取消收藏成功", TastyToast.SUCCESS);

@@ -23,7 +23,7 @@ public class SNADatabaseHelper extends AbstractDatabaseHelper {
                 "CREATE TABLE IF NOT EXISTS BIEZHI_GOODS("
                         + "_id INTEGER PRIMARY KEY AUTOINCREMENT"
                         + ",ID VARCHAR(32)" + ",TITLE VARCHAR(100)" + ",URL VARCHAR(100)" + ",PRICE VARCHAR(20)" +
-                        ",PIC_URL VARCHAR(100))",
+                        ",PIC_URL VARCHAR(100)" + ",objectid VARCHAR(20))",
                 "CREATE TABLE IF NOT EXISTS FAV_GOODS("
                         + "_id INTEGER PRIMARY KEY AUTOINCREMENT"
                         + ",userid VARCHAR(100)" + ",objectid VARCHAR(100)" + ",isfav VARCHAR(100))"};
@@ -120,7 +120,7 @@ public class SNADatabaseHelper extends AbstractDatabaseHelper {
             return 0;
         }
         try {
-           return mDb.insertOrThrow(table, nullColumnHack, values);
+            return mDb.insertOrThrow(table, nullColumnHack, values);
         } catch (Exception e) {
             e.printStackTrace();
         }
