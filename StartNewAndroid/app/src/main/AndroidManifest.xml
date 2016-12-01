@@ -136,6 +136,10 @@
             android:name=".activity.APPActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name=".activity.CloudTagActivity"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
     </application>
 
 </manifest>
