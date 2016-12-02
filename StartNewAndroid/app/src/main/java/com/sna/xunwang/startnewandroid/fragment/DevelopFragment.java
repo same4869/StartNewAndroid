@@ -7,6 +7,7 @@ import android.util.Log;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.adapter.DevelopItemAdapter;
 import com.sna.xunwang.startnewandroid.bean.DevelopItemBean;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,8 @@ import cn.bmob.v3.listener.FindListener;
 public class DevelopFragment extends BaseFragment {
     @BindView(R.id.develop_recyclerview)
     RecyclerView recyclerView;
+    @BindView(R.id.develop_cool_wait_view)
+    AVLoadingIndicatorView avLoadingIndicatorView;
 
     private DevelopItemAdapter adapter;
     private List<DevelopItemBean> list = new ArrayList<>();
@@ -34,16 +37,6 @@ public class DevelopFragment extends BaseFragment {
 
     @Override
     public void lazyFetchData() {
-//        list.clear();
-//
-//        DevelopItemBean developItemBean = new DevelopItemBean();
-//        developItemBean.setItemImgUrl("http://pic5.ablesky" +
-//                ".cn/content/pic/coursephoto/2015/03/25/8f40c6ac-ae97-42b6-b803-1abe2c5f38e3.png");
-//        developItemBean.setItemTitle("测试");
-//        developItemBean.setItemContent("我是测试我是测试");
-//        developItemBean.setItemUrl("http://www.7724.com/");
-//        list.add(developItemBean);
-//        adapter.notifyDataSetChanged();
         requestDevInfo();
     }
 
@@ -55,6 +48,7 @@ public class DevelopFragment extends BaseFragment {
             public void done(List<DevelopItemBean> object, BmobException e) {
                 if (e == null) {
                     adapter.setData(object);
+                    avLoadingIndicatorView.smoothToHide();
                 } else {
                     Log.i("bmob", "失败：" + e.getMessage() + "," + e.getErrorCode());
                 }
@@ -73,5 +67,7 @@ public class DevelopFragment extends BaseFragment {
         linearLayoutManager.setSmoothScrollbarEnabled(true);
         linearLayoutManager.setAutoMeasureEnabled(true);
         recyclerView.setHasFixedSize(true);
+
+        avLoadingIndicatorView.smoothToShow();
     }
 }

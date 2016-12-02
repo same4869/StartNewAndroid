@@ -83,6 +83,7 @@ public class UserFragment extends BaseFragment {
             UserBean userBean = UserUtil.getUserInfo();
             userText.setText(userBean.getUsername());
             userLogout.setVisibility(View.VISIBLE);
+            showAvatar(userBean.getAvatar().getUrl());
         } else {
             userText.setText("未登录,登录后收藏永久保存");
             userLogout.setVisibility(View.GONE);
@@ -91,15 +92,20 @@ public class UserFragment extends BaseFragment {
 
     @Override
     public void initViews() {
-        Glide.with(getActivity()).load("http://www.2cto.com/uploadfile/Collfiles/20150410/2015041008373592.jpg")
+
+
+    }
+
+    private void showAvatar(String url) {
+        Glide.with(getActivity()).load(url)
                 .asBitmap().centerCrop().into(new SimpleTarget<Bitmap>() {
 
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                userImg.setImageBitmap(BitmapBlurUtil.setBlur(resource, 25));
+                roundedImageView.setImageBitmap(resource);
+                userImg.setImageBitmap(BitmapBlurUtil.setBlur(resource, 15));
             }
         });
-
     }
 
     @OnClick(R.id.user_img_logo)
@@ -237,12 +243,13 @@ public class UserFragment extends BaseFragment {
                 @Override
                 public void done(BmobException e) {
                     if (e == null) {
-                        UserBean currentUser = UserUtil.getUserInfo();
+                        final UserBean currentUser = UserUtil.getUserInfo();
                         currentUser.setAvatar(file);
                         currentUser.update(new UpdateListener() {
                             @Override
                             public void done(BmobException e) {
                                 if (e == null) {
+                                    showAvatar(currentUser.getAvatar().getUrl());
                                     ToastUtil.showToast(getActivity(), "更改头像成功", TastyToast.SUCCESS);
                                 } else {
                                     XLog.d(Constants.TAG, "1 ---> " + e.getMessage());
@@ -306,7 +313,6 @@ public class UserFragment extends BaseFragment {
                     if (extras != null) {
                         Bitmap bitmap = extras.getParcelable("data");
                         String iconUrl = saveToSdCard(bitmap);
-                        userImg.setImageBitmap(bitmap);
                         updateIcon(iconUrl);
                     }
                 }

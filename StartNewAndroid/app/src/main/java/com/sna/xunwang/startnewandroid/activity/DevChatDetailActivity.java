@@ -76,7 +76,6 @@ public class DevChatDetailActivity extends BaseActivity {
 
     @Override
     public void initToolBar() {
-
     }
 
     @Override

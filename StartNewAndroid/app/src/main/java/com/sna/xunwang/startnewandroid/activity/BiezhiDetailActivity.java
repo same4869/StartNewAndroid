@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -49,6 +50,8 @@ public class BiezhiDetailActivity extends BaseActivity {
     RecyclerView recyclerView;
     @BindView(R.id.comment_content)
     EditText commentContent;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     private String url;
     private BiezhiGoodsBean dailyBean;
@@ -75,7 +78,7 @@ public class BiezhiDetailActivity extends BaseActivity {
 
     @Override
     public void initToolBar() {
-
+        toolbar.setTitle(dailyBean.getTitle());
     }
 
     @Override
@@ -108,8 +111,8 @@ public class BiezhiDetailActivity extends BaseActivity {
 
     @OnClick(R.id.bzd_detail_image)
     void show3dTag() {
-        Intent intent = new Intent(this, CloudTagActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, CloudTagActivity.class);
+//        startActivity(intent);
     }
 
     @OnClick(R.id.comment_commit)

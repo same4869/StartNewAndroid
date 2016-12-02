@@ -8,6 +8,15 @@ public class AppRecBean {
     private int appImgSrc;
     private String appTitle;
     private String appContent;
+    private String packageName;
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
 
     public int getAppImgSrc() {
         return appImgSrc;

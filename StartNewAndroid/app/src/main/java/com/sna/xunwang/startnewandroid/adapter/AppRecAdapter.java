@@ -1,6 +1,7 @@
 package com.sna.xunwang.startnewandroid.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import butterknife.ButterKnife;
 public class AppRecAdapter extends RecyclerView.Adapter<AppRecAdapter.AppRecHolder> {
     private Context mContext;
     private List<AppRecBean> list;
+    private ItemClickInterface itemClickInterface;
 
     public AppRecAdapter(Context mContext, List<AppRecBean> list) {
         this.mContext = mContext;
@@ -37,17 +39,33 @@ public class AppRecAdapter extends RecyclerView.Adapter<AppRecAdapter.AppRecHold
     }
 
     @Override
-    public void onBindViewHolder(AppRecHolder holder, int position) {
+    public void onBindViewHolder(AppRecHolder holder, final int position) {
         if (list != null) {
             holder.appPic.setImageResource(list.get(position).getAppImgSrc());
             holder.appTitie.setText(list.get(position).getAppTitle());
             holder.appContent.setText(list.get(position).getAppContent());
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (itemClickInterface != null) {
+                        itemClickInterface.onItemClickInterface(view, position);
+                    }
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public interface ItemClickInterface {
+        void onItemClickInterface(View view, int position);
+    }
+
+    public void setOnItemClickInterface(ItemClickInterface itemClickInterface) {
+        this.itemClickInterface = itemClickInterface;
     }
 
     public static class AppRecHolder extends RecyclerView.ViewHolder {
@@ -58,6 +76,8 @@ public class AppRecAdapter extends RecyclerView.Adapter<AppRecAdapter.AppRecHold
         TextView appTitie;
         @BindView(R.id.app_item_content_tv)
         TextView appContent;
+        @BindView(R.id.app_card_layout)
+        CardView cardView;
 
         public AppRecHolder(View view) {
             super(view);
