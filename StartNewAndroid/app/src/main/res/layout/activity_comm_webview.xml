@@ -8,10 +8,38 @@
     android:layout_height="match_parent"
     tools:context="com.sna.xunwang.startnewandroid.activity.CommWebviewActivity">
 
+    <RelativeLayout
+        android:id="@+id/web_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/bar_theme">
+
+        <TextView
+            android:id="@+id/web_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="标题"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/web_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:text="分享给好友"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
+
     <WebView
         android:id="@+id/common_webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/web_actionbar"/>
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/progressBar"

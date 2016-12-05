@@ -83,10 +83,15 @@ public class UserFragment extends BaseFragment {
             UserBean userBean = UserUtil.getUserInfo();
             userText.setText(userBean.getUsername());
             userLogout.setVisibility(View.VISIBLE);
-            showAvatar(userBean.getAvatar().getUrl());
+            if (userBean.getAvatar() == null) {
+                showAvatar("file:///android_asset/user_img.jpg", 25);
+            } else {
+                showAvatar(userBean.getAvatar().getUrl(), 15);
+            }
         } else {
             userText.setText("未登录,登录后收藏永久保存");
             userLogout.setVisibility(View.GONE);
+            showAvatar("file:///android_asset/user_img.jpg", 25);
         }
     }
 
@@ -96,14 +101,18 @@ public class UserFragment extends BaseFragment {
 
     }
 
-    private void showAvatar(String url) {
+    private void showAvatar(String url, final float radius) {
         Glide.with(getActivity()).load(url)
                 .asBitmap().centerCrop().into(new SimpleTarget<Bitmap>() {
 
             @Override
             public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                roundedImageView.setImageBitmap(resource);
-                userImg.setImageBitmap(BitmapBlurUtil.setBlur(resource, 15));
+                if (radius == 25) {
+                    roundedImageView.setImageBitmap(BitmapBlurUtil.setBlur(resource, radius));
+                } else {
+                    roundedImageView.setImageBitmap(resource);
+                }
+                userImg.setImageBitmap(BitmapBlurUtil.setBlur(resource, radius));
             }
         });
     }
@@ -249,7 +258,7 @@ public class UserFragment extends BaseFragment {
                             @Override
                             public void done(BmobException e) {
                                 if (e == null) {
-                                    showAvatar(currentUser.getAvatar().getUrl());
+                                    showAvatar(currentUser.getAvatar().getUrl(), 15);
                                     ToastUtil.showToast(getActivity(), "更改头像成功", TastyToast.SUCCESS);
                                 } else {
                                     XLog.d(Constants.TAG, "1 ---> " + e.getMessage());

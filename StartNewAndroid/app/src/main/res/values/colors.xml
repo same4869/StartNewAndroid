@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="bar_theme">#ff5BA8FF</color>
-    <color name="theme">#ff1B78DD</color>
+    <color name="theme">#00cffc</color>
     <color name="colorPrimary">#ff1B78DD</color>
     <color name="colorPrimaryDark">#3F51B5</color>
     <color name="colorAccent">#FF4081</color>
@@ -15,4 +15,7 @@
     <color name="btn_pressed_color">#2187e6</color>
     <color name="line_bg">#ffbababa</color>
     <color name="no">#00000000</color>
+
+    <color name="color_theme1">#f8931f</color>
+    <color name="color_theme2">#334051</color>
 </resources>

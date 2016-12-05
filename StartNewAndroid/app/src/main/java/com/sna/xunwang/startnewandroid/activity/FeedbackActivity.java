@@ -45,7 +45,7 @@ public class FeedbackActivity extends BaseActivity implements View.OnLayoutChang
     RelativeLayout rootView;
 
     private int sum;
-    private String welcomeStr = "你好你好你好";
+    private String welcomeStr = "亲,如果对本软件有什么意见和建议都可以在这里直接吐槽,作者会及时跟您沟通~(本条为自动回复)";
     private int screenHeight;
     private int keyHeight;
 
@@ -105,14 +105,15 @@ public class FeedbackActivity extends BaseActivity implements View.OnLayoutChang
         }
     }
 
-    private void sendMessageToDev(String msg) {
+    private void sendMessageToDev(final String msg) {
         if (StringUtil.isStringNullorBlank(msg)) {
             ToastUtil.showToast(getApplicationContext(), "内容不要为空噢", TastyToast.ERROR);
             return;
         }
-        if (userBean == null) {
+        if (userBean == null || userBean.getUsername() == null) {
             ToastUtil.showToast(getApplicationContext(), "请先登录哈", TastyToast.INFO);
             finish();
+            return;
         }
         XLog.d(Constants.TAG, "sendMessageToDev");
         updateFeedbackMsgToBmob(userBean.getUsername(), msg);

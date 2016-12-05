@@ -52,14 +52,14 @@ public class APPActivity extends BaseActivity {
 
     private void initAppData() {
         AppRecBean appRecBean1 = new AppRecBean();
-        appRecBean1.setAppImgSrc(R.drawable.about_icon);
+        appRecBean1.setAppImgSrc(R.drawable.qfzc);
         appRecBean1.setAppTitle("千帆知车");
-        appRecBean1.setAppContent("做最有亲和力的汽车社区");
+        appRecBean1.setAppContent("做最有亲和力的汽车知识学习社区");
         appRecBean1.setPackageName("com.xun.qianfanzhiche");
         list.add(appRecBean1);
 
         AppRecBean appRecBean2 = new AppRecBean();
-        appRecBean2.setAppImgSrc(R.drawable.collect_icon);
+        appRecBean2.setAppImgSrc(R.drawable.qfqhb);
         appRecBean2.setAppTitle("千帆抢红包");
         appRecBean2.setAppContent("无广告无插件无后门的抢红包神器");
         appRecBean2.setPackageName("com.xun.qianfanhongbao");

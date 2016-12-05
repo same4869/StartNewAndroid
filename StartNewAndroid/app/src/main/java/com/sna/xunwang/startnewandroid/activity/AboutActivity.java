@@ -33,7 +33,7 @@ public class AboutActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.about_icon)
+    @OnClick(R.id.app_logo)
     void gotoDevMode() {
         if ((System.currentTimeMillis() - goToDevModeTime) > 2000) {
             goToDevModeTime = System.currentTimeMillis();

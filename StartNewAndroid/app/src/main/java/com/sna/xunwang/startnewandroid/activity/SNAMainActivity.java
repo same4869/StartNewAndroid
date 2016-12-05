@@ -38,11 +38,11 @@ public class SNAMainActivity extends BaseActivity {
     private void initAHBottomNavigation() {
         // Create items
         AHBottomNavigationItem item1 = new AHBottomNavigationItem("好物推荐", R.mipmap.tab_home,
-                parseColor("#33bbff"));
+                getResources().getColor(R.color.theme));
         AHBottomNavigationItem item2 = new AHBottomNavigationItem("发现探索", R.mipmap.tab_second,
-                parseColor("#6e92C6"));
+                getResources().getColor(R.color.color_theme1));
         AHBottomNavigationItem item3 = new AHBottomNavigationItem("个人中心", R.mipmap.tab_three,
-                parseColor("#6e92C6"));
+                getResources().getColor(R.color.color_theme2));
 
         // Add items
         bottomNavigation.addItem(item1);
@@ -64,9 +64,23 @@ public class SNAMainActivity extends BaseActivity {
             @Override
             public void onTabSelected(int position, boolean wasSelected) {
                 showFragment(fragments.get(position % 3));
-//                ToastUtil.showToast(getApplicationContext(), "position --> " + position);
+                resetToolbarBg(position);
+//              ToastUtil.showToast(getApplicationContext(), "position --> " + position);
             }
         });
+    }
+
+    private void resetToolbarBg(int position) {
+        if (position == 2) {
+            toolbar.setBackgroundColor(getResources().getColor(R.color.color_theme2));
+            StatusBarUtil.setColor(this, getResources().getColor(R.color.color_theme2));
+        } else if (position == 1) {
+            toolbar.setBackgroundColor(getResources().getColor(R.color.color_theme1));
+            StatusBarUtil.setColor(this, getResources().getColor(R.color.color_theme1));
+        } else {
+            toolbar.setBackgroundColor(getResources().getColor(R.color.theme));
+            StatusBarUtil.setColor(this, getResources().getColor(R.color.theme));
+        }
     }
 
     @Override
@@ -81,9 +95,9 @@ public class SNAMainActivity extends BaseActivity {
 
     @Override
     public void initToolBar() {
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.bar_theme));
-        toolbar.setTitle("呵呵呵呵");
-        toolbar.setSubtitle("哈哈哈哈");
+        toolbar.setTitle("千帆好物");
+        toolbar.setSubtitle("");
+        resetToolbarBg(0);
     }
 
     @Override

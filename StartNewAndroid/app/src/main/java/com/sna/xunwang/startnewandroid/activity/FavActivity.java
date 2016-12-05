@@ -3,6 +3,9 @@ package com.sna.xunwang.startnewandroid.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.view.ViewStub;
+import android.widget.RelativeLayout;
 
 import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
@@ -10,6 +13,7 @@ import com.sna.xunwang.startnewandroid.adapter.BiezhiGoodsAdapter;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
 import com.sna.xunwang.startnewandroid.bean.UserBean;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
+import com.sna.xunwang.startnewandroid.utils.UserUtil;
 
 import java.util.Date;
 import java.util.List;
@@ -58,7 +62,24 @@ public class FavActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        prepareRequeset();
+        if (UserUtil.isLogined()) {
+            prepareRequeset();
+        } else {
+            showNoDataLayout(true);
+        }
+    }
+
+    protected void showNoDataLayout(boolean isShow) {
+        ViewStub stub = (ViewStub) findViewById(R.id.no_data_stub);
+        stub.inflate();
+        RelativeLayout noDataLayout = (RelativeLayout) findViewById(R.id.base_no_data_layout);
+        if (isShow) {
+            recyclerView.setVisibility(View.GONE);
+            noDataLayout.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            noDataLayout.setVisibility(View.GONE);
+        }
     }
 
     private void prepareRequeset() {
@@ -73,6 +94,10 @@ public class FavActivity extends BaseActivity {
             @Override
             public void done(List<BiezhiGoodsBean> list, BmobException e) {
                 if (e == null) {
+                    if (list != null && list.size() == 0) {
+                        showNoDataLayout(true);
+                        return;
+                    }
                     for (int i = 0; i < list.size(); i++) {
                         list.get(i).setMyFav(true);
                     }

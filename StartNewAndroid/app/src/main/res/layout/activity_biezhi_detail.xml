@@ -102,14 +102,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="NEXT!"/>
+                    android:background="@color/bar_theme"
+                    android:text="链接直达!"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
 
                 <Button
                     android:id="@+id/share_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="SHARE"/>
+                    android:background="@color/color_theme1"
+                    android:text="分享!"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -119,8 +125,7 @@
                 android:layout_below="@+id/bzd_panel_layout"
                 android:layout_marginBottom="10dp"
                 android:background="#eeeeee"
-                android:dividerHeight="10dp"
-                android:padding="5dp"/>
+                android:dividerHeight="10dp"/>
 
         </RelativeLayout>
 
@@ -131,6 +136,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:background="#e0e0e0"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="4dip">
@@ -142,8 +148,9 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dip"
             android:layout_weight="1"
+            android:background="@color/white"
             android:ems="10"
-            android:hint="来来来评论一句吧"
+            android:hint="来评论一句吧"
             android:minHeight="40dp"
             android:paddingLeft="4dip">
 

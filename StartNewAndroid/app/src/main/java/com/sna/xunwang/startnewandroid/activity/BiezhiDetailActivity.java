@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.jaeger.library.StatusBarUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.adapter.CommentAdapter;
@@ -79,6 +80,7 @@ public class BiezhiDetailActivity extends BaseActivity {
     @Override
     public void initToolBar() {
         toolbar.setTitle(dailyBean.getTitle());
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.theme));
     }
 
     @Override
@@ -120,12 +122,12 @@ public class BiezhiDetailActivity extends BaseActivity {
         if (UserUtil.isLogined()) {// 已登录
             String commentEdit = commentContent.getText().toString().trim();
             if (TextUtils.isEmpty(commentEdit)) {
-                ToastUtil.showToast(getApplicationContext(), "评论内容不能为空。");
+                ToastUtil.showToast(getApplicationContext(), "评论内容不能为空。", TastyToast.INFO);
                 return;
             }
             publishComment(UserUtil.getUserInfo(), commentEdit);
         } else {
-            ToastUtil.showToast(getApplicationContext(), "发表评论前请先登录。");
+            ToastUtil.showToast(getApplicationContext(), "发表评论前请先登录。", TastyToast.INFO);
         }
     }
 

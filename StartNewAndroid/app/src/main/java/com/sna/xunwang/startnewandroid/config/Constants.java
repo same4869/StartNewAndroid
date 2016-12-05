@@ -15,4 +15,6 @@ public class Constants {
 
     public static final String U_MENG_APPKEY = "5832595d75ca354579000dac";
 
+    public static final String QQ_APP_ID = "222222";
+
 }

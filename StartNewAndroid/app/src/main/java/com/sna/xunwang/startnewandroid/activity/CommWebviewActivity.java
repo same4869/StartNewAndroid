@@ -10,14 +10,18 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.config.Constants;
+import com.sna.xunwang.startnewandroid.manager.ShareManager;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CommWebviewActivity extends BaseActivity {
     public static final String COMMON_WEB_URL = "common_web_url";
@@ -27,8 +31,11 @@ public class CommWebviewActivity extends BaseActivity {
     AVLoadingIndicatorView progressBar;
     @BindView(R.id.common_webview)
     WebView commonWebView;
+    @BindView(R.id.web_title)
+    TextView webTitle;
 
     private String lastUrl1, lastUrl2;
+    private String url;
     private int i;
 
     @Override
@@ -39,9 +46,9 @@ public class CommWebviewActivity extends BaseActivity {
     @Override
     public void initViews(Bundle savedInstanceState) {
         Intent intent = getIntent();
-        String url = intent.getStringExtra(COMMON_WEB_URL);
+        url = intent.getStringExtra(COMMON_WEB_URL);
 
-//        setActionBarTitle(intent.getStringExtra(COMMON_WEB_TITLE));
+        webTitle.setText(intent.getStringExtra(COMMON_WEB_TITLE));
 
         progressBar = (AVLoadingIndicatorView) findViewById(R.id.progressBar);
 
@@ -56,12 +63,17 @@ public class CommWebviewActivity extends BaseActivity {
 
     @Override
     public void initToolBar() {
-
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.bar_theme));
     }
 
     @Override
     public void initData() {
 
+    }
+
+    @OnClick(R.id.web_share)
+    void shareWeb() {
+        ShareManager.getInstance().showShare(getApplicationContext(), "快来一起在千帆好物发现探索", null, url);
     }
 
     private void initSetting() {
