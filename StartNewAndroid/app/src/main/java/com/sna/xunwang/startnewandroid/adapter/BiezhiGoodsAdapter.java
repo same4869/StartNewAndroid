@@ -17,6 +17,7 @@ import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.activity.BiezhiDetailActivity;
 import com.sna.xunwang.startnewandroid.bean.BiezhiGoodsBean;
+import com.sna.xunwang.startnewandroid.bean.CommentBean;
 import com.sna.xunwang.startnewandroid.bean.UserBean;
 import com.sna.xunwang.startnewandroid.comm.MultiThreadAsyncTask;
 import com.sna.xunwang.startnewandroid.config.Constants;
@@ -32,9 +33,12 @@ import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.datatype.BmobRelation;
 import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.UpdateListener;
 import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
@@ -54,6 +58,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
     private Context mContext;
     private List<BiezhiGoodsBean> biezhiGoodBeanlist;
     private boolean showDanmaku;
+    private List<CommentBean> danmuKu;
 
     private BaseDanmakuParser parser = new BaseDanmakuParser() {
         @Override
@@ -120,6 +125,7 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
                             showDanmaku);
                     holder.danmakuView.toggle();
                     if (!holder.isDanmuOpen) {
+                        prepareDanmu(position);
                         holder.danmakuView.stop();
                         holder.biezhiDanmuIv.setImageResource(R.mipmap.bz_danmu_open);
                         initDamuview(holder);
@@ -156,7 +162,12 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
             public void prepared() {
                 showDanmaku = true;
                 holder.danmakuView.start();
-                generateSomeDanmaku(holder.danmakuContext, holder.danmakuView);
+                holder.danmakuView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        generateSomeDanmaku(holder.danmakuContext, holder.danmakuView);
+                    }
+                }, 500);
             }
 
             @Override
@@ -204,17 +215,41 @@ public class BiezhiGoodsAdapter extends RecyclerView.Adapter<BiezhiGoodsAdapter.
         return Color.argb(255, (int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
     }
 
-    /**
-     * 随机生成一些弹幕内容以供测试
-     */
+    private void prepareDanmu(int position) {
+        if (danmuKu != null) {
+            danmuKu.clear();
+        }
+        BmobQuery<CommentBean> query = new BmobQuery<CommentBean>();
+        query.addWhereRelatedTo("relation", new BmobPointer(biezhiGoodBeanlist.get(position)));
+        query.include("user");
+        query.setLimit(30);
+        query.findObjects(new FindListener<CommentBean>() {
+            @Override
+            public void done(List<CommentBean> object, BmobException e) {
+                if (e == null) {
+                    danmuKu = object;
+                } else {
+                    XLog.d(Constants.TAG, "prepareDanmu 失败：" + e.getMessage() + "," + e.getErrorCode());
+                }
+            }
+        });
+    }
+
     private void generateSomeDanmaku(final DanmakuContext danmakuContext, final DanmakuView danmakuView) {
+        if (danmuKu == null) {
+            return;
+        }
+        if (danmuKu.size() == 0) {
+            ToastUtil.showToast(mContext, "还没有弹幕,快去评论组成弹幕~", TastyToast.INFO);
+            return;
+        }
         MultiThreadAsyncTask.poolExecute(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < 30; i++) {
+                for (int i = 0; i < danmuKu.size(); i++) {
                     if (showDanmaku) {
                         int time = new Random().nextInt(1000);
-                        String content = "" + time + time + "我是第" + i + "个弹幕";
+                        String content = danmuKu.get(i).getCommentContent();
                         addDanmaku(danmakuContext, danmakuView, content, false);
                         try {
                             Thread.sleep(time);

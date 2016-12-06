@@ -18,6 +18,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 /**
  * Created by xunwang on 16/11/28.
@@ -54,9 +56,18 @@ public class DevelopItemAdapter extends RecyclerView.Adapter<DevelopItemAdapter.
             holder.developImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, CommWebviewActivity.class);
-                    intent.putExtra(CommWebviewActivity.COMMON_WEB_URL, list.get(position).getItemUrl());
-                    mContext.startActivity(intent);
+                    list.get(position).increment("clickCounts");
+                    list.get(position).update(new UpdateListener() {
+                        @Override
+                        public void done(BmobException e) {
+                            if (e == null) {
+                                Intent intent = new Intent(mContext, CommWebviewActivity.class);
+                                intent.putExtra(CommWebviewActivity.COMMON_WEB_URL, list.get(position).getItemUrl());
+                                mContext.startActivity(intent);
+                            }
+                        }
+                    });
+
                 }
             });
         }

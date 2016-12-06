@@ -6,11 +6,20 @@ import cn.bmob.v3.BmobObject;
  * Created by xunwang on 16/11/28.
  */
 
-public class DevelopItemBean extends BmobObject{
+public class DevelopItemBean extends BmobObject {
     private String itemImgUrl;
     private String itemTitle;
     private String itemContent;
     private String itemUrl;
+    private long clickCounts;
+
+    public long getClickCounts() {
+        return clickCounts;
+    }
+
+    public void setClickCounts(long clickCounts) {
+        this.clickCounts = clickCounts;
+    }
 
     public String getItemImgUrl() {
         return itemImgUrl;
