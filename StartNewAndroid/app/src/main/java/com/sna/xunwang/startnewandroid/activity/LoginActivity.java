@@ -1,7 +1,6 @@
 package com.sna.xunwang.startnewandroid.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.widget.EditText;
@@ -56,7 +55,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void initToolBar() {
-        StatusBarUtil.setColor(this, Color.parseColor("#00ff00"));
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.bar_theme));
     }
 
     @Override

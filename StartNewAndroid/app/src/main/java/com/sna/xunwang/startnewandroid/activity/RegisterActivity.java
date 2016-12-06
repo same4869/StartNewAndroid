@@ -3,6 +3,7 @@ package com.sna.xunwang.startnewandroid.activity;
 import android.os.Bundle;
 import android.widget.EditText;
 
+import com.jaeger.library.StatusBarUtil;
 import com.sdsmdg.tastytoast.TastyToast;
 import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.bean.UserBean;
@@ -34,7 +35,7 @@ public class RegisterActivity extends BaseActivity {
 
     @Override
     public void initToolBar() {
-
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.bar_theme));
     }
 
     @Override
@@ -65,7 +66,7 @@ public class RegisterActivity extends BaseActivity {
                     ToastUtil.showToast(getApplicationContext(), "注册成功", TastyToast.SUCCESS);
                     finish();
                 } else {
-                    ToastUtil.showToast(getApplicationContext(), "注册失败,请重试", TastyToast.ERROR);
+                    ToastUtil.showToast(getApplicationContext(), "注册失败," + e.getMessage(), TastyToast.ERROR);
                 }
             }
         });

@@ -8,7 +8,7 @@ android {
         applicationId "com.sna.xunwang.startnewandroid"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 1
+        versionCode 1000000
         versionName "1.0"
     }
     buildTypes {

@@ -12,6 +12,7 @@ import com.sna.xunwang.startnewandroid.R;
 import com.sna.xunwang.startnewandroid.fragment.BiezhiFragment;
 import com.sna.xunwang.startnewandroid.fragment.DevelopFragment;
 import com.sna.xunwang.startnewandroid.fragment.UserFragment;
+import com.sna.xunwang.startnewandroid.manager.UpdateManager;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class SNAMainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        UpdateManager.getInstance().startCheckUpdate(getApplicationContext());
     }
 
     private void showFragment(Fragment fragment) {
