@@ -9,20 +9,25 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.jaeger.library.StatusBarUtil;
 import com.sna.xunwang.startnewandroid.R;
+import com.sna.xunwang.startnewandroid.bean.UserBean;
 import com.sna.xunwang.startnewandroid.fragment.BiezhiFragment;
 import com.sna.xunwang.startnewandroid.fragment.DevelopFragment;
 import com.sna.xunwang.startnewandroid.fragment.UserFragment;
+import com.sna.xunwang.startnewandroid.manager.BaiduLocationManager;
 import com.sna.xunwang.startnewandroid.manager.UpdateManager;
 import com.sna.xunwang.startnewandroid.utils.ToastUtil;
+import com.sna.xunwang.startnewandroid.utils.UserUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.UpdateListener;
 
 import static android.graphics.Color.parseColor;
 
-public class SNAMainActivity extends BaseActivity {
+public class SNAMainActivity extends BaseActivity implements BaiduLocationManager.LocationListener {
     @BindView(R.id.bottom_navigation)
     AHBottomNavigation bottomNavigation;
     @BindView(R.id.toolbar)
@@ -92,6 +97,8 @@ public class SNAMainActivity extends BaseActivity {
 
         showFragment(fragments.get(0));
         initAHBottomNavigation();
+
+        BaiduLocationManager.getInstance(getApplicationContext()).setLocationListener(this);
     }
 
     @Override
@@ -104,6 +111,7 @@ public class SNAMainActivity extends BaseActivity {
     @Override
     public void initData() {
         UpdateManager.getInstance().startCheckUpdate(getApplicationContext());
+        BaiduLocationManager.getInstance(getApplicationContext()).startGetLocation();
     }
 
     private void showFragment(Fragment fragment) {
@@ -121,5 +129,20 @@ public class SNAMainActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onLocationed(String location) {
+        BaiduLocationManager.getInstance(getApplicationContext()).stopGetLocation();
+        if (UserUtil.isLogined()) {
+            UserBean userBean = new UserBean();
+            userBean.setLocation(location);
+            userBean.update(UserUtil.getUserInfo().getObjectId(), new UpdateListener() {
+                @Override
+                public void done(BmobException e) {
+
+                }
+            });
+        }
     }
 }

@@ -20,6 +20,7 @@ public class BaiduLocationManager implements BaiduLbsUtil.BaiduNotifyListener {
     private static BaiduLocationManager mInstance;
     public static LocationClient mLocationClient = null;
     public static BDLocationListener myListener = new MyLocationListener();
+    private static LocationListener locationListener;
 
     private BaiduLocationManager() {
 
@@ -79,6 +80,7 @@ public class BaiduLocationManager implements BaiduLbsUtil.BaiduNotifyListener {
         public void onReceiveLocation(BDLocation location) {
             //Receive Location
             StringBuffer sb = new StringBuffer(256);
+            StringBuilder sb2 = new StringBuilder();
             sb.append("time : ");
             sb.append(location.getTime());
             sb.append("\nerror code : ");
@@ -100,12 +102,14 @@ public class BaiduLocationManager implements BaiduLbsUtil.BaiduNotifyListener {
                 sb.append(location.getDirection());// 单位度
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());
+                sb2.append(location.getAddrStr());
                 sb.append("\ndescribe : ");
                 sb.append("gps定位成功");
 
             } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
                 sb.append("\naddr : ");
                 sb.append(location.getAddrStr());
+                sb2.append(location.getAddrStr());
                 //运营商信息
                 sb.append("\noperationers : ");
                 sb.append(location.getOperators());
@@ -125,6 +129,7 @@ public class BaiduLocationManager implements BaiduLbsUtil.BaiduNotifyListener {
                 sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
             }
             sb.append("\nlocationdescribe : ");
+            sb2.append("," + location.getLocationDescribe());
             sb.append(location.getLocationDescribe());// 位置语义化信息
             List<Poi> list = location.getPoiList();// POI数据
             if (list != null) {
@@ -135,14 +140,30 @@ public class BaiduLocationManager implements BaiduLbsUtil.BaiduNotifyListener {
                     sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
                 }
             }
-            XLog.d(Constants.TAG, sb.toString());
+//            XLog.d(Constants.TAG, sb.toString());
+            XLog.d(Constants.TAG, "location --> " + sb2.toString());
+            if (locationListener != null) {
+                locationListener.onLocationed(sb2.toString());
+            }
             mLocationClient.stop();
         }
+    }
+
+    public void setLocationListener(LocationListener locationListener) {
+        this.locationListener = locationListener;
+    }
+
+    public interface LocationListener {
+        void onLocationed(String location);
     }
 
     public void startGetLocation() {
         XLog.d(Constants.TAG, "startGetLocation");
         mLocationClient.start();
+    }
+
+    public void stopGetLocation() {
+        mLocationClient.stop();
     }
 
 }

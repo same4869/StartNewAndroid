@@ -12,6 +12,15 @@ public class UserBean extends BmobUser {
     private String name;
     private BmobFile avatar;
     private BmobRelation favorite;
+    private String location;
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getName() {
         return name;
