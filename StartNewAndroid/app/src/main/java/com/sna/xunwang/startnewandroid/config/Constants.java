@@ -5,7 +5,7 @@ package com.sna.xunwang.startnewandroid.config;
  */
 
 public class Constants {
-    public static final boolean IS_DEBUG = true;
+    public static final boolean IS_DEBUG = false;
 
     public static final String TAG = "kkkkkkkk";
 

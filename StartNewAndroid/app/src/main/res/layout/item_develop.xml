@@ -36,6 +36,7 @@
             android:shadowColor="#77000000"
             android:shadowDx="3"
             android:shadowDy="3"
+            android:shadowRadius="1"
             android:text="非著名程序员"
             android:textColor="@color/white"
             android:textSize="20sp"
@@ -52,6 +53,7 @@
             android:shadowColor="#77000000"
             android:shadowDx="3"
             android:shadowDy="3"
+            android:shadowRadius="1"
             android:text="软件简介软件简介软件简介软件简介"
             android:textColor="@color/color_theme2"
             android:textSize="16sp"/>

@@ -21,7 +21,6 @@
     <!-- SD卡读取权限，用户写入离线定位数据 -->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
@@ -51,6 +50,7 @@
 
         <activity
             android:name=".activity.SNAMainActivity"
+            android:exported="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
         </activity>
@@ -63,16 +63,20 @@
 
         <activity
             android:name=".activity.OtherActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.BiezhiDetailActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.CommWebviewActivity"
             android:screenOrientation="portrait">
-            <action android:name="android.intent.action.VIEW"/>
+            <action
+                android:name="android.intent.action.VIEW"
+                android:exported="false"/>
 
             <category android:name="android.intent.category.DEFAULT"/>
             <category android:name="android.intent.category.BROWSABLE"/>
@@ -109,39 +113,48 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity
             android:name=".activity.LoginActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.RegisterActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.FavActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.AboutActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.FeedbackActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize">
         </activity>
         <activity
             android:name=".activity.DevChatListActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.DevChatDetailActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.APPActivity"
+            android:exported="false"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.CloudTagActivity"
+            android:exported="false"
             android:theme="@android:style/Theme.Dialog">
         </activity>
         <activity android:name=".activity.CoverActivity">

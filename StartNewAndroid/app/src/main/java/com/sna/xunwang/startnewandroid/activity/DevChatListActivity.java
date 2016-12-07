@@ -61,11 +61,10 @@ public class DevChatListActivity extends BaseActivity {
 
     private void setDevData() {
         DevelopItemBean developItemBean = new DevelopItemBean();
-        developItemBean.setItemTitle("知乎问题");
-        developItemBean.setItemContent("男友现在贷款买房我们一起还房贷，他父母坚持结婚后才在房产证上写我的名字，怎么办");
-        developItemBean.setItemImgUrl("https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=2657539485," +
-                "3858778876&fm=58&s=79428856C4B42831443E1ED10300D099");
-        developItemBean.setItemUrl("https://www.zhihu.com/question/53253586?from=timeline&isappinstalled=1");
+        developItemBean.setItemTitle("植物大战僵尸");
+        developItemBean.setItemContent("一款深受全球玩家所推崇的休闲益智游戏");
+        developItemBean.setItemImgUrl("http://img.7724.com/pipaw/logo/2015/01/20/629b051156056e7be22880a4b221c4af.png");
+        developItemBean.setItemUrl("http://play.7724.com/olgames/zwdzjs/");
         developItemBean.save(new SaveListener<String>() {
 
             @Override
